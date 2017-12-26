@@ -25,10 +25,10 @@ struct Flight							//航班信息
 	char T_Airport[LSIZE];				//起飞机场		6
 	char L_Airport[LSIZE];				//到达机场		7
 
-	char T_Time[SHSIZE+1];    			//起飞时刻		8
+	char T_Time[SHSIZE+2];    			//起飞时刻		8
 	char T_Time_Stamp[LSIZE];			//起飞时间戳	9
 
-	char L_Time[SHSIZE+1];    			//到达时刻		10
+	char L_Time[SHSIZE+2];    			//到达时刻		10
 	char L_Time_Stamp[LSIZE];			//到达时间戳	11
 
 

@@ -32,7 +32,7 @@
     <ClCompile Include="src\Flight.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Test_Less.cpp">
+    <ClCompile Include="Test_Main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

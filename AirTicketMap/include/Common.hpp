@@ -59,7 +59,7 @@ bool All_Is_Num(string str)
 void Split_Row(string str, string separator, vector<string> &result)
 {//对每一行以逗号为分隔符进行分割
 	result.clear();
-	int cutAt;
+	size_t cutAt;
 	while ((cutAt = str.find_first_of(separator)) != str.npos)
 	{
 		if (cutAt > 0)

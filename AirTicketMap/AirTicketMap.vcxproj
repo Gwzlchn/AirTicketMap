@@ -118,7 +118,7 @@
   <ItemGroup>
     <ClCompile Include="src\AirTicSystem.cpp" />
     <ClCompile Include="src\Flight.cpp" />
-    <ClCompile Include="Test_Less.cpp" />
+    <ClCompile Include="Test_Main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

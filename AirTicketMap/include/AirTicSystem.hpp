@@ -6,7 +6,7 @@
 #include<map>
 #include<unordered_map>
 
-typedef vector<Flight> Flight_Vector;
+
 using	std::vector;
 using	std::string;
 using	std::multimap;
@@ -57,7 +57,7 @@ struct Neg_Land_City
 class AirTicSystem
 {
 private:
-	vector<Pos_TakeOff_City>		Pos_T_City_Vec;						//边链表中顶点
+	vector<Pos_TakeOff_City>		Pos_T_City_Vec;						//边链表中顶点 AirTicSys
 	vector<Customer>			Customer_Vec;
 	int Flight_Total_Count;								//总航线数
 	int Flight_From_One_Count;							//一个机场出发总航线数
@@ -71,27 +71,31 @@ public:
 	AirTicSystem(const char* File_Name);
 	
 	void Create_Map_From_CSV(const char* File_Name);
-	void ReadIn_From_Map();
+	void Create_Pos_From_Map();
+
+	
 	
 	
 	void Print_ALL_To_Terminal();
 	void Print_ALL_To_File(const char* File_Name);
 	void Print_Flight_To_Termimal(Flight& One_Flight);
-	void Print_Flight_Vec_To_Terminal(Flight_Vector& Flight_Vec);
+	void Print_Flight_Vec_To_Terminal(vector<Flight>& Flight_Vec);
 
 	//插入
-	bool Insert_Flight(Pos_TakeOff_City* T_City, Pos_Land_City* L_Air, const Flight& NewFlight);
+	bool Insert_Flight_To_Graph(Pos_TakeOff_City* Pos_T_City, Pos_Land_City* Pos_L_City, const vector<string>& New_Ser_Vec);
+	bool Insert_Flight_To_Graph(Pos_TakeOff_City* Pos_T_City, Pos_Land_City* Pos_L_City, const string New_Ser_Str);
 
-	//流水号内部全用vector<string>
-	//其余均为包装形式
-	//查询航班主函数，依据Ser_vec
-	int Search_Flight(vector<string>& A_Ser_Vec, Flight& Ans_Flight);
+
+
+
+
 	//查询航班函数，依据Flght_Seq字符串（调用上一个函数）
 	int  Search_Flight(Flight_Serial_Type Flight_Seq, Flight& Ans_Flight);
 	
+	int Search_Flight_ByID(string Flight_ID, vector<Flight_Serial_Type>& Serials_Vec);
 	
 	//通过航班 号查询，可能返回多个航班
-	int  Search_Flight(string Flight_ID, vector<Flight> &All_Flight);
+	
 
 	//查询起飞城市是否存在 返回索引 负值不存在
 	int Index_OF_T_City_Vec(Flight_Serial_Type& Flight_Ser);
@@ -105,6 +109,8 @@ public:
 
 	//分离流水号
 	void Split_Ser_Info(Flight_Serial_Type Serial, vector<string>& A_Ser_Vec);
+	void Merge_Ser_Info(Flight_Serial_Type& Serial, vector<string> A_Ser_Vec);
+
 	//检查流水号是否有效
 	int  Check_Seq_Info(vector<string>& A_Ser_Vec) const;
 	

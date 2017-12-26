@@ -123,7 +123,7 @@ int AirTicSystem::Index_OF_Pos_OR_Neg_City_Vec(char V_City[3],int Vec_Choose)
 //查询流水号是否在map中
 //在 返回1 ans_flight
 //不在 返回 -1
-int AirTicSystem::Search_Flight(Flight_Serial_Type Flight_Seq, Flight & Ans_Flight)
+int AirTicSystem::Search_Flight(Serial_Type Flight_Seq, Flight & Ans_Flight)
 {
 	auto F_Iter = Ser_Flight_Map.find(Flight_Seq);
 	if (F_Iter == Ser_Flight_Map.end())
@@ -134,10 +134,10 @@ int AirTicSystem::Search_Flight(Flight_Serial_Type Flight_Seq, Flight & Ans_Flig
 	}
 }
 
-int AirTicSystem::Search_Flight_ByID(string Flight_ID, vector<Flight_Serial_Type>& Serials_Vec)
+int AirTicSystem::Search_Flight_ByID(string Flight_ID, Serials_Vec_Type& Serials_Vec)
 {
 	auto Sers_Entries = FlightID_Ser_Map.count(Flight_ID);
-	auto Sers_Cnt = Sers_Entries;
+	int Sers_Cnt = Sers_Entries;
 	auto S_Iter = FlightID_Ser_Map.find(Flight_ID);
 	while (Sers_Entries) {
 		Serials_Vec.push_back(S_Iter->second);
@@ -156,7 +156,7 @@ int AirTicSystem::Index_OF_Pos_OR_Neg_City_Vec(Vertex_City* V_City, int Vector_C
 
 
 
-void AirTicSystem::Split_Ser_Info(Flight_Serial_Type Serial, vector<string>& A_Ser_Vec)
+void AirTicSystem::Split_Ser_Info(Serial_Type Serial, vector<string>& A_Ser_Vec)
 {
 	A_Ser_Vec.push_back(Serial.substr(0, 3));
 	A_Ser_Vec.push_back(Serial.substr(3, 3));
@@ -165,7 +165,7 @@ void AirTicSystem::Split_Ser_Info(Flight_Serial_Type Serial, vector<string>& A_S
 	A_Ser_Vec.push_back(Serial.substr(24, 4));
 }
 
-void AirTicSystem::Merge_Ser_Info(Flight_Serial_Type & Serial, vector<string> A_Ser_Vec)
+void AirTicSystem::Merge_Ser_Info(Serial_Type & Serial, vector<string> A_Ser_Vec)
 {
 	for (auto S_Iter = A_Ser_Vec.begin();
 		S_Iter != A_Ser_Vec.end(); S_Iter++)
@@ -199,7 +199,7 @@ void AirTicSystem::Print_Flight_Vec_To_Terminal(vector<Flight>& Flight_Vec)
 	return;
 }
 
-void AirTicSystem::Print_Flight_Serials_Vec_To_Terminal(vector<string>& Serials_Vec)
+void AirTicSystem::Print_Flight_Serials_Vec_To_Terminal(Serials_Vec_Type& Serials_Vec)
 {
 	for (auto S_Iter = Serials_Vec.begin();
 		S_Iter != Serials_Vec.end(); S_Iter++) {
@@ -220,7 +220,7 @@ bool AirTicSystem::Insert_Flight_To_Pos_OR_Neg_Graph(Vertex_City* V_City, Edge_C
 		int V_Index = Index_OF_Pos_OR_Neg_City_Vec(V_City, Vec_Choose);
 
 
-		string New_Ser;
+		Serial_Type New_Ser;
 		Merge_Ser_Info(New_Ser, New_Ser_Vec);
 		
 		if (V_Index >= 0) {

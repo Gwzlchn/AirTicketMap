@@ -6,7 +6,8 @@
 #include<vector>
 using std::string;
 using std::vector;
-typedef string Flight_Serial_Type;			//机票流水号
+typedef string Serial_Type;			//机票流水号
+typedef vector<Serial_Type> Serials_Vec_Type;
 
 #define LSIZE 32
 #define MSIZE 8
@@ -42,14 +43,14 @@ struct Flight							//航班信息
 	int Max_Seats;						//满载人员		16
 	int Cur_Order;						//当前已定人数	17
 
-	Flight_Serial_Type  Serial_NO;			//机票流水号 = 起飞机场 + 降落机场 + 航班号 +　起飞时间戳 +　降落时刻
+	Serial_Type  Serial_NO;			//机票流水号 = 起飞机场 + 降落机场 + 航班号 +　起飞时间戳 +　降落时刻
 };
 Flight Create_New_Flight(vector<string> Line_Data);
 
 
 struct Customer								//顾客信息
 {
-	vector<Flight_Serial_Type> Flight_Serials;	//购买的所有机票（保存流水号）
+	Serials_Vec_Type Flight_Serials;	//购买的所有机票（保存流水号）
 	char Customer_Name[MSIZE];				//顾客姓名
 	char IDcard[LSIZE];						//身份证号
 	int Tic_Bought;							//该顾客名下所购机票数

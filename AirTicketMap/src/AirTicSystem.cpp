@@ -199,6 +199,16 @@ void AirTicSystem::Print_Flight_Vec_To_Terminal(vector<Flight>& Flight_Vec)
 	return;
 }
 
+void AirTicSystem::Print_Flight_Serials_Vec_To_Terminal(vector<string>& Serials_Vec)
+{
+	for (auto S_Iter = Serials_Vec.begin();
+		S_Iter != Serials_Vec.end(); S_Iter++) {
+		auto F_Iter = Ser_Flight_Map.find((*S_Iter));
+		Print_Flight_To_Termimal((*F_Iter).second);
+	}
+	return;
+}
+
 
 //Vec_choose == 1 找正图 ==2 找反图
 bool AirTicSystem::Insert_Flight_To_Pos_OR_Neg_Graph(Vertex_City* V_City, Edge_City* E_City, const vector<string>& New_Ser_Vec, int Vec_Choose) {

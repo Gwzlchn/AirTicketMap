@@ -17,6 +17,7 @@ using	std::map;
 
 
 //正图、反图统一
+//正图选1 反图选2
 
 //边城市
 struct Edge_City	
@@ -62,29 +63,25 @@ public:
 	void Create_Map_From_CSV(const char* File_Name);
 	void Create_Pos_Neg_From_Map();
 
-	
-	
-	
 	void Print_ALL_To_Terminal();
 	void Print_ALL_To_File(const char* File_Name);
 	void Print_Flight_To_Termimal(Flight& One_Flight);
 	void Print_Flight_Vec_To_Terminal(vector<Flight>& Flight_Vec);
+	void Print_Flight_Serials_Vec_To_Terminal(vector<string>& Serials_Vec);
 
-	//插入
+	//插入到边链表 正图+反图
 	bool Insert_Flight_To_Pos_OR_Neg_Graph(Vertex_City* V_City, Edge_City* E_City, const vector<string>& New_Ser_Vec,int Vec_Choose);
 	bool Insert_Flight_To_Pos_OR_Neg_Graph(Vertex_City* V_City, Edge_City* E_City, const string New_Ser_Str, int Vec_Choose);
 
 	
 
 
-
-
-	//查询航班函数，依据Flght_Seq字符串（调用上一个函数）
+	//查询航班函数，依据航班流水号（map find）
 	int  Search_Flight(Flight_Serial_Type Flight_Seq, Flight& Ans_Flight);
-	
+	//通过航班 号查询，可能返回多个航班
 	int Search_Flight_ByID(string Flight_ID, vector<Flight_Serial_Type>& Serials_Vec);
 	
-	//通过航班 号查询，可能返回多个航班
+	
 	
 
 	//查询起飞城市是否存在 返回索引 负值不存在
@@ -94,18 +91,13 @@ public:
 	int Index_OF_Pos_OR_Neg_City_Vec(char V_City[3], int Vec_Choose);
 
 
-	//检查时间戳是否有效
-	bool Check_Stamp(string& Stamp_To_Check) const;
-
 	//分离流水号
 	void Split_Ser_Info(Flight_Serial_Type Serial, vector<string>& A_Ser_Vec);
 	void Merge_Ser_Info(Flight_Serial_Type& Serial, vector<string> A_Ser_Vec);
-
+	//检查时间戳是否有效
+	bool Check_Stamp(string& Stamp_To_Check) const;
 	//检查流水号是否有效
 	int  Check_Seq_Info(vector<string>& A_Ser_Vec) const;
-	
-	
-
 };
 
 

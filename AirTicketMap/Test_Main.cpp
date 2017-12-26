@@ -17,6 +17,8 @@ int main() {
 	test.Print_Flight_To_Termimal(Ans_Flight);
 	test.Search_Flight(Serials[1], Ans_Flight);
 	test.Print_Flight_To_Termimal(Ans_Flight);
+	cout << endl;
+	test.Print_Flight_Serials_Vec_To_Terminal(Serials);
 
 
 	return 0;

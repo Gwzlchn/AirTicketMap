@@ -14,7 +14,7 @@ typedef string Flight_Serial_Type;			//机票流水号
 
 struct Flight							//航班信息
 {
-	char T_City[MSIZE*2];					//起飞城市		0
+	char T_City[MSIZE*2];				//起飞城市		0
 	char T_City_Short[SHSIZE];			//起飞城市缩写	1
 	char L_City[MSIZE*2];				//到达城市		2
 	char L_City_Short[SHSIZE];			//到达城市缩写	3

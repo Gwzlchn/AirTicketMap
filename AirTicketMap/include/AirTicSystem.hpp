@@ -13,42 +13,30 @@ using	std::multimap;
 using	std::map;
 
 
-//正图
-struct Pos_Land_City
+
+
+
+//正图、反图统一
+
+//边城市
+struct Edge_City	
 {
 	friend class AirTicSystem;
-	char L_City_Short[SHSIZE];
+	char Edge_City_Short[SHSIZE];
 	vector<Flight_Serial_Type> Flight_Serials;			//只保存流水号
-	Pos_Land_City* Next_Pos_L_City;
+	Edge_City* Next_Edge_City;
 };
 
 
-//出发城市做顶点
-struct  Pos_TakeOff_City										
+
+//顶点城市
+struct Vertex_City   
 {
 	friend class AirTicSystem;
-	char T_City_Short[SHSIZE];
-	Pos_Land_City *Pos_L_City_Head;
+	char Vertex_City_Short[SHSIZE];
+	Edge_City *Edge_City_Head;
 };
 
-
-
-struct Neg_TakeOff_City
-{
-	friend class AirTicSystem;
-	char T_City_Short[SHSIZE];
-	vector<Flight_Serial_Type> Flight_Serials;			//只保存流水号
-	Neg_TakeOff_City* Next_Neg_T_City;
-};
-
-
-//反图
-struct Neg_Land_City
-{
-	friend class AirTicSystem;
-	char L_City_Short[SHSIZE];
-	Neg_TakeOff_City* Neg_T_City_Head;
-};
 
 
 
@@ -56,14 +44,15 @@ struct Neg_Land_City
 
 class AirTicSystem
 {
+protected:
+	vector<Vertex_City>			Pos_T_City_Vec;			//正图，以出发地做顶点
+	vector<Vertex_City>			Neg_L_City_Vec;			//反图，以目的地做顶点
 private:
-	vector<Pos_TakeOff_City>		Pos_T_City_Vec;						//边链表中顶点 AirTicSys
 	vector<Customer>			Customer_Vec;
 	int Flight_Total_Count;								//总航线数
 	int Flight_From_One_Count;							//一个机场出发总航线数
 
-
-	//保存结构
+	//映射结构
 	map<Flight_Serial_Type, Flight>				Ser_Flight_Map;		//流水号到航班信息的映射
 	multimap<string ,Flight_Serial_Type>		FlightID_Ser_Map;	//航班号到流水号的映射
 public:
@@ -71,7 +60,7 @@ public:
 	AirTicSystem(const char* File_Name);
 	
 	void Create_Map_From_CSV(const char* File_Name);
-	void Create_Pos_From_Map();
+	void Create_Pos_Neg_From_Map();
 
 	
 	
@@ -82,9 +71,10 @@ public:
 	void Print_Flight_Vec_To_Terminal(vector<Flight>& Flight_Vec);
 
 	//插入
-	bool Insert_Flight_To_Graph(Pos_TakeOff_City* Pos_T_City, Pos_Land_City* Pos_L_City, const vector<string>& New_Ser_Vec);
-	bool Insert_Flight_To_Graph(Pos_TakeOff_City* Pos_T_City, Pos_Land_City* Pos_L_City, const string New_Ser_Str);
+	bool Insert_Flight_To_Pos_OR_Neg_Graph(Vertex_City* V_City, Edge_City* E_City, const vector<string>& New_Ser_Vec,int Vec_Choose);
+	bool Insert_Flight_To_Pos_OR_Neg_Graph(Vertex_City* V_City, Edge_City* E_City, const string New_Ser_Str, int Vec_Choose);
 
+	
 
 
 
@@ -98,10 +88,10 @@ public:
 	
 
 	//查询起飞城市是否存在 返回索引 负值不存在
-	int Index_OF_T_City_Vec(Flight_Serial_Type& Flight_Ser);
-	int Index_OF_T_City_Vec(vector<string>& Ser_Info);
-	int Index_OF_T_City_Vec(Pos_TakeOff_City* T_AP);
-	int Index_OF_T_City_Vec(char T_City[3]);
+	//int Index_OF_T_City_Vec(Flight_Serial_Type& Flight_Ser);
+	//int Index_OF_T_City_Vec(vector<string>& Ser_Info);
+	int Index_OF_Pos_OR_Neg_City_Vec(Vertex_City* V_City, int Vector_Choose);
+	int Index_OF_Pos_OR_Neg_City_Vec(char V_City[3], int Vec_Choose);
 
 
 	//检查时间戳是否有效
@@ -113,18 +103,6 @@ public:
 
 	//检查流水号是否有效
 	int  Check_Seq_Info(vector<string>& A_Ser_Vec) const;
-	
-	
-
-
-
-	
-
-	
-
-	
-	
-	
 	
 	
 

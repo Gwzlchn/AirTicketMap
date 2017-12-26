@@ -1,7 +1,7 @@
 #include "include\AirTicSystem.hpp"
 #include<iostream>
 
-const char* File_Name = "..\\RawData\\AirlineDataRAW_GBK.csv";
+const char* File_Name = "..\\RawData\\AirlineDataTEST_GBK.csv";
 using namespace std;
 
 int main() {

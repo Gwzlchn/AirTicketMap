@@ -16,24 +16,39 @@ AirTicSystem::AirTicSystem(const char * File_Name)
 	Flight_From_One_Count = 0;
 	Flight_Total_Count = 0;
 	Create_Map_From_CSV(File_Name);
-	Create_Pos_From_Map();
+	Create_Pos_Neg_From_Map();
 }
 
-void AirTicSystem::Create_Pos_From_Map()
+void AirTicSystem::Create_Pos_Neg_From_Map()
 {
 	for (auto M_Iter = Ser_Flight_Map.begin();
 		M_Iter != Ser_Flight_Map.end(); M_Iter++) {
 		
-		Pos_TakeOff_City* New_Pos_T_Cy = new Pos_TakeOff_City;
-		New_Pos_T_Cy->Pos_L_City_Head = NULL;
-		strcpy(New_Pos_T_Cy->T_City_Short, M_Iter->second.T_City_Short);
+		//正图
+		Vertex_City*   New_Pos_V_T_Cy = new Vertex_City;
+		New_Pos_V_T_Cy->Edge_City_Head = NULL;
+		strcpy(New_Pos_V_T_Cy->Vertex_City_Short, M_Iter->second.T_City_Short);
 		
-		Pos_Land_City* New_Pos_L_Cy = new Pos_Land_City;
-		New_Pos_L_Cy->Next_Pos_L_City = NULL;
-		New_Pos_L_Cy->Flight_Serials.push_back(M_Iter->first);
-		strcpy(New_Pos_L_Cy->L_City_Short, M_Iter->second.L_City_Short);
+		Edge_City* New_Pos_E_L_Cy = new Edge_City;
+		New_Pos_E_L_Cy->Next_Edge_City = NULL;
+		New_Pos_E_L_Cy->Flight_Serials.push_back(M_Iter->first);
+		strcpy(New_Pos_E_L_Cy->Edge_City_Short, M_Iter->second.L_City_Short);
 
-		Insert_Flight_To_Graph(New_Pos_T_Cy, New_Pos_L_Cy, M_Iter->first);
+		Insert_Flight_To_Pos_OR_Neg_Graph(New_Pos_V_T_Cy, New_Pos_E_L_Cy, M_Iter->first,1);
+
+		//反图
+		Vertex_City*   New_Neg_V_L_Cy = new Vertex_City;
+		New_Neg_V_L_Cy->Edge_City_Head = NULL;
+		strcpy(New_Neg_V_L_Cy->Vertex_City_Short, M_Iter->second.L_City_Short);
+
+		Edge_City* New_Neg_E_T_Cy = new Edge_City;
+		New_Neg_E_T_Cy->Next_Edge_City = NULL;
+		New_Neg_E_T_Cy->Flight_Serials.push_back(M_Iter->first);
+		strcpy(New_Neg_E_T_Cy->Edge_City_Short, M_Iter->second.T_City_Short);
+
+		Insert_Flight_To_Pos_OR_Neg_Graph(New_Neg_V_L_Cy, New_Neg_E_T_Cy, M_Iter->first,2);
+
+
 	}
 		
 	
@@ -74,25 +89,35 @@ void AirTicSystem::Create_Map_From_CSV(const char * File_Name)
 
 
 
-//返回值>=0 出发城市在T_City_Vec中，值为索引，留给插入航班函数用
-//返回-2 不存在出发地,
-int AirTicSystem::Index_OF_T_City_Vec(char T_City[3])
-{
-	int T_Flag = 1, T_Index = -1;
-	for (auto T_Iter = Pos_T_City_Vec.begin();
-		T_Iter != Pos_T_City_Vec.end(); T_Iter++) {
-		T_Flag = strcmp((*T_Iter).T_City_Short, T_City);
-		T_Index++;
-		if (T_Flag == 0) break;
-	}
-	T_Index = (T_Index == -1) ? 0 : T_Index;
 
-	//T_Flag==0说明该城市起飞顶点中存在
-	//T_Flag！=0说明一个新出发城市顶点
-	if (T_Flag)
-		return -2;
+//Vec_choose == 1 找正图 ==2 找反图
+//返回值>=0 出发城市在T_City_Vec中，值为索引，留给插入航班函数用
+//返回-2 不存在该顶点
+
+int AirTicSystem::Index_OF_Pos_OR_Neg_City_Vec(char V_City[3],int Vec_Choose)
+{
+	if (Vec_Choose == 1 || Vec_Choose == 2) {
+		vector<Vertex_City>& V_City_Vec = (Vec_Choose == 1) ? Pos_T_City_Vec : Neg_L_City_Vec;
+
+		int V_Flag = 1, V_Index = -1;
+
+		for (auto V_Iter = V_City_Vec.begin();
+				V_Iter != V_City_Vec.end(); V_Iter++) {
+			V_Flag = strcmp((*V_Iter).Vertex_City_Short, V_City);
+			V_Index++;
+			if (V_Flag == 0) break;
+		}
+		V_Index = (V_Index == -1) ? 0 : V_Index;
+
+		//T_Flag==0说明该城市起飞顶点中存在
+		//T_Flag！=0说明一个新出发城市顶点
+		if (V_Flag)
+			return -2;
+		else
+			return V_Index;
+	}
 	else
-		return T_Index;
+		return -2;
 }
 
 //查询流水号是否在map中
@@ -122,9 +147,8 @@ int AirTicSystem::Search_Flight_ByID(string Flight_ID, vector<Flight_Serial_Type
 	return Sers_Cnt;
 }
 
-int AirTicSystem::Index_OF_T_City_Vec(Pos_TakeOff_City* T_AP)
-{
-	return Index_OF_T_City_Vec(T_AP->T_City_Short);
+int AirTicSystem::Index_OF_Pos_OR_Neg_City_Vec(Vertex_City* V_City, int Vector_Choose){
+	return Index_OF_Pos_OR_Neg_City_Vec(V_City->Vertex_City_Short,Vector_Choose);
 }
 
 
@@ -175,48 +199,69 @@ void AirTicSystem::Print_Flight_Vec_To_Terminal(vector<Flight>& Flight_Vec)
 	return;
 }
 
-bool AirTicSystem::Insert_Flight_To_Graph(Pos_TakeOff_City * Pos_T_City, Pos_Land_City * Pos_L_City, const vector<string>& New_Ser_Vec)
-{
-	int T_Index = Index_OF_T_City_Vec(Pos_T_City);
 
-	string New_Ser;
-	Merge_Ser_Info(New_Ser, New_Ser_Vec);
-	//flag==0说明该城市起飞顶点中存在
-	if (T_Index >= 0) {
-		Pos_TakeOff_City Temp_T_Cy = Pos_T_City_Vec[T_Index];
-		Pos_Land_City* L_Ptr = Temp_T_Cy.Pos_L_City_Head;
+//Vec_choose == 1 找正图 ==2 找反图
+bool AirTicSystem::Insert_Flight_To_Pos_OR_Neg_Graph(Vertex_City* V_City, Edge_City* E_City, const vector<string>& New_Ser_Vec, int Vec_Choose) {
+	
+	
+	if (Vec_Choose == 1 || Vec_Choose == 2) {
+		vector<Vertex_City>& V_City_Vec = (Vec_Choose == 1) ? Pos_T_City_Vec : Neg_L_City_Vec;
 
-		int L_Flag = 1;
-		for (; L_Ptr != NULL; L_Ptr = L_Ptr->Next_Pos_L_City) {
-			L_Flag = strcmp(L_Ptr->L_City_Short,New_Ser_Vec[1].c_str());
-			if (L_Flag == 0) break;
+		int V_Index = Index_OF_Pos_OR_Neg_City_Vec(V_City, Vec_Choose);
+
+
+		string New_Ser;
+		Merge_Ser_Info(New_Ser, New_Ser_Vec);
+		
+		if (V_Index >= 0) {
+			Vertex_City Temp_V_Cy = V_City_Vec[V_Index];
+			Edge_City* E_Cy_Ptr = Temp_V_Cy.Edge_City_Head;
+
+			int E_Flag = 1;
+			for (; E_Cy_Ptr != NULL; E_Cy_Ptr = E_Cy_Ptr->Next_Edge_City) {
+					E_Flag = strcmp(E_City->Edge_City_Short, New_Ser_Vec[1].c_str());
+				if (E_Flag == 0) break;
+			}
+
+			//该降落顶点存在
+			if (E_Flag == 0)
+				E_Cy_Ptr->Flight_Serials.push_back(New_Ser);
+
+			//该降落顶点不存在
+			else if (E_Flag != 0) {
+				Edge_City* Temp_E_Ptr = Temp_V_Cy.Edge_City_Head;
+				while (Temp_E_Ptr->Next_Edge_City != NULL)
+					Temp_E_Ptr = Temp_E_Ptr->Next_Edge_City;
+				Temp_E_Ptr->Next_Edge_City = E_City;
+			}
+
 		}
-
-		//该降落顶点存在
-		if (L_Flag == 0)
-			L_Ptr->Flight_Serials.push_back(New_Ser);
-
-		//该降落顶点不存在
-		else if (L_Flag != 0) {
-			Pos_Land_City* Temp_L_Ptr = Temp_T_Cy.Pos_L_City_Head;
-			while (Temp_L_Ptr->Next_Pos_L_City != NULL)
-				Temp_L_Ptr = Temp_L_Ptr->Next_Pos_L_City;
-			Temp_L_Ptr->Next_Pos_L_City = Pos_L_City;
+		//T_Index！=0说明一个新出发城市顶点
+		else {
+			V_City->Edge_City_Head = E_City;
+			V_City_Vec.push_back((*V_City));
 		}
-
+		return true;
 	}
-	//T_Index！=0说明一个新出发城市顶点
-	else {
-		Pos_T_City->Pos_L_City_Head = Pos_L_City;
-		Pos_T_City_Vec.push_back((*Pos_T_City));
-	}
-
-	return true;
+	else
+		return false;
+	
 }
 
-bool AirTicSystem::Insert_Flight_To_Graph(Pos_TakeOff_City * Pos_T_City, Pos_Land_City * Pos_L_City, const string New_Ser_Str)
-{
+
+
+
+
+bool AirTicSystem::Insert_Flight_To_Pos_OR_Neg_Graph(Vertex_City* V_City, Edge_City* E_City, const string New_Ser_Str, int Vec_Choose) {
+
 	vector<string> New_Ser_Vec;
 	Split_Ser_Info(New_Ser_Str, New_Ser_Vec);
-	return Insert_Flight_To_Graph(Pos_T_City, Pos_L_City, New_Ser_Vec);
+	return Insert_Flight_To_Pos_OR_Neg_Graph(V_City, E_City, New_Ser_Vec,Vec_Choose);
 }
+
+
+
+
+
+
+

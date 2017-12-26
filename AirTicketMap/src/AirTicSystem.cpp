@@ -8,6 +8,41 @@ using namespace std;
 //非类中函数写到Common里
 
 
+Flight Create_New_Flight()
+{
+	string Line;
+	cout << "起始城市0,起始城市缩写1,到达城市2,到达城市缩写3,公司4,航班号5,起飞机场6,到达机场7,起飞时间8,"
+		<< "到达时间10,机型12,日期13,价格14,最大折扣15,满载16,当前人数17" << endl
+		<< "中间用逗号分隔" << endl;
+	cin >> Line;
+	vector<string> Line_Vec, Date_Vec, Time_Vec;
+	string sep = ",";
+	Split_Row(Line, sep, Line_Vec);
+
+
+	//日期
+	sep = "/";
+	Split_Row(Line_Vec[11], sep, Date_Vec);
+
+	string T_Stamp, L_Stamp;
+	sep = ":";
+	Split_Row(Line_Vec[8], sep, Time_Vec);
+	T_Stamp = Date_Vec[0] + Date_Vec[1] + Date_Vec[2] + Time_Vec[0] + Time_Vec[1];
+
+	Split_Row(Line_Vec[9], sep, Time_Vec);
+	L_Stamp = Date_Vec[0] + Date_Vec[1] + Date_Vec[2] + Time_Vec[0] + Time_Vec[1];
+
+
+	Line_Vec.insert(Line_Vec.begin() + 9, T_Stamp);
+	Line_Vec.insert(Line_Vec.begin() + 11, L_Stamp);
+
+
+
+	Flight NN = Create_New_Flight(Line_Vec);
+	return NN;
+}
+	
+
 
 
 
@@ -267,6 +302,66 @@ bool AirTicSystem::Insert_Flight_To_Pos_OR_Neg_Graph(Vertex_City* V_City, Edge_C
 	vector<string> New_Ser_Vec;
 	Split_Ser_Info(New_Ser_Str, New_Ser_Vec);
 	return Insert_Flight_To_Pos_OR_Neg_Graph(V_City, E_City, New_Ser_Vec,Vec_Choose);
+}
+
+bool AirTicSystem::Insert_Flight_To_Pos_OR_Neg_Graph(Flight & New_Flight)
+{
+	//正图
+	Vertex_City*   New_Pos_V_T_Cy = new Vertex_City;
+	New_Pos_V_T_Cy->Edge_City_Head = NULL;
+	strcpy(New_Pos_V_T_Cy->Vertex_City_Short,New_Flight.T_City_Short);
+
+	Edge_City* New_Pos_E_L_Cy = new Edge_City;
+	New_Pos_E_L_Cy->Next_Edge_City = NULL;
+	New_Pos_E_L_Cy->Flight_Serials.push_back(New_Flight.Serial_NO);
+	strcpy(New_Pos_E_L_Cy->Edge_City_Short, New_Flight.L_City_Short);
+
+	Insert_Flight_To_Pos_OR_Neg_Graph(New_Pos_V_T_Cy, New_Pos_E_L_Cy, New_Flight.Serial_NO, 1);
+
+	//反图
+	Vertex_City*   New_Neg_V_L_Cy = new Vertex_City;
+	New_Neg_V_L_Cy->Edge_City_Head = NULL;
+	strcpy(New_Neg_V_L_Cy->Vertex_City_Short, New_Flight.L_City_Short);
+
+	Edge_City* New_Neg_E_T_Cy = new Edge_City;
+	New_Neg_E_T_Cy->Next_Edge_City = NULL;
+	New_Neg_E_T_Cy->Flight_Serials.push_back(New_Flight.Serial_NO);
+	strcpy(New_Neg_E_T_Cy->Edge_City_Short, New_Flight.T_City_Short);
+
+	Insert_Flight_To_Pos_OR_Neg_Graph(New_Neg_V_L_Cy, New_Neg_E_T_Cy, New_Flight.Serial_NO, 2);
+
+	
+	return false;
+}
+
+bool AirTicSystem::Insert_Flight_To_All(Flight& New_Flight)
+{
+	auto S_M_Iter = Ser_Flight_Map.find(New_Flight.Serial_NO);
+	if (S_M_Iter == Ser_Flight_Map.end()) {
+		Insert_Flight_To_Pos_OR_Neg_Graph(New_Flight);
+		Ser_Flight_Map.insert({ New_Flight.Serial_NO,New_Flight });
+		FlightID_Ser_Map.insert({ New_Flight.Flight_ID,New_Flight.Serial_NO });
+	}
+	
+	//已存在相同航班
+	else
+		return false;
+}
+ 
+bool AirTicSystem::Insert_Flight_To_All(vector<string>& Whole_Line_Data)
+{
+	Flight New_Flight = Create_New_Flight(Whole_Line_Data);
+	return Insert_Flight_To_All(New_Flight);
+
+
+}
+
+bool AirTicSystem::Insert_Flight_To_All(string Whole_Line_Raw)
+{
+	vector<string> Line_Data_Vec;
+	string sep = ",";
+	Split_Row(Whole_Line_Raw,sep, Line_Data_Vec);
+	return Insert_Flight_To_All(Line_Data_Vec);
 }
 
 

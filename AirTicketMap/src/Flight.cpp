@@ -1,4 +1,10 @@
-#include "..\include\Flight.hpp"
+﻿#include "..\include\Flight.hpp"
+//#include "..\include\Common.hpp"
+#include<iostream>
+using std::cin;
+using std::endl;
+using std::cout;
+
 
 Flight Create_New_Flight(vector<string> Line_Data) {
 	Flight New_Flight;
@@ -36,5 +42,8 @@ Flight Create_New_Flight(vector<string> Line_Data) {
 
 	return New_Flight;
 }
+
+
+
 
 

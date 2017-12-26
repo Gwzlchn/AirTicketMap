@@ -1,4 +1,4 @@
-﻿#pragma once
+﻿
 #ifndef AIRTICSYSTEM_HPP
 #define AIRTICSYSTEM_HPP
 
@@ -73,7 +73,11 @@ public:
 	//插入到边链表 正图+反图
 	bool Insert_Flight_To_Pos_OR_Neg_Graph(Vertex_City* V_City, Edge_City* E_City, const vector<string>& New_Ser_Vec,int Vec_Choose);
 	bool Insert_Flight_To_Pos_OR_Neg_Graph(Vertex_City* V_City, Edge_City* E_City, const string New_Ser_Str, int Vec_Choose);
+	bool Insert_Flight_To_Pos_OR_Neg_Graph(Flight& NewFlight);
 
+	bool Insert_Flight_To_All(Flight& New_Flight);
+	bool Insert_Flight_To_All(vector<string>& Whole_Line_Data);
+	bool Insert_Flight_To_All(string Whole_Line_Raw);
 	
 
 

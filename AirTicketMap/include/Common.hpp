@@ -1,5 +1,6 @@
 ﻿#ifndef COMMON_HPP
 #define COMMON_HPP
+
 #include<string>
 #include<vector>
 
@@ -9,7 +10,12 @@ using std::vector;
 bool All_Is_Alpha(string str);
 bool All_Is_Num(string str);
 
-void Split_Row(string str, string separator, vector<string> &result);
+void Split_Row(string str,  string separator, vector<string> &result);
+
+
+
+
+
 
 
 #endif // !COMMON_HPP
@@ -56,7 +62,7 @@ bool All_Is_Num(string str)
 
 
 //解析csv文件的一行
-void Split_Row(string str, string separator, vector<string> &result)
+void Split_Row(string str,  string separator, vector<string> &result)
 {//对每一行以逗号为分隔符进行分割
 	result.clear();
 	size_t cutAt;

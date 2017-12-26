@@ -46,6 +46,7 @@ struct Flight							//航班信息
 	Serial_Type  Serial_NO;			//机票流水号 = 起飞机场 + 降落机场 + 航班号 +　起飞时间戳 +　降落时刻
 };
 Flight Create_New_Flight(vector<string> Line_Data);
+Flight Create_New_Flight();
 
 
 struct Customer								//顾客信息

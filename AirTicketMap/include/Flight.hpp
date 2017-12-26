@@ -1,9 +1,10 @@
-﻿#pragma once
+﻿
 #ifndef FLIGHT_HPP
 #define FLIGHT_HPP
 
 #include<string>
 #include<vector>
+
 using std::string;
 using std::vector;
 typedef string Serial_Type;			//机票流水号

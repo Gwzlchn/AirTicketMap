@@ -117,6 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AirTicSystem.cpp" />
+    <ClCompile Include="src\Common.cpp" />
     <ClCompile Include="src\Flight.cpp" />
     <ClCompile Include="Test_Main.cpp" />
   </ItemGroup>

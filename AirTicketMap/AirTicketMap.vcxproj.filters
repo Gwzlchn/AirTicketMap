@@ -24,6 +24,9 @@
     <ClInclude Include="include\Common.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\Users.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AirTicSystem.cpp">
@@ -38,5 +41,31 @@
     <ClCompile Include="src\Common.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\Users.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\RawData\admin.csv">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="..\RawData\AirlineDataRAW_GBK.csv">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="..\RawData\AirlineDataRAW_UTF8.csv">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="..\RawData\AirlineDataTEST_GBK.csv">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="..\RawData\AirlineDataTEST_UTF8.csv">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="..\RawData\City_UTF8.csv">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="..\RawData\Customer.csv">
+      <Filter>资源文件</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -8,8 +8,6 @@
 
 
 
-using	std::vector;
-using	std::string;
 using	std::multimap;
 using	std::map;
 
@@ -50,7 +48,7 @@ protected:
 	vector<Vertex_City>			Pos_T_City_Vec;			//正图，以出发地做顶点
 	vector<Vertex_City>			Neg_L_City_Vec;			//反图，以目的地做顶点
 private:
-	vector<Customer>			Customer_Vec;
+	//vector<Customer>			Customer_Vec;
 	int Flight_Total_Count;								//总航线数
 	int Flight_From_One_Count;							//一个机场出发总航线数
 

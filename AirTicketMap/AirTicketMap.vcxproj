@@ -114,12 +114,23 @@
     <ClInclude Include="include\AirTicSystem.hpp" />
     <ClInclude Include="include\Common.hpp" />
     <ClInclude Include="include\Flight.hpp" />
+    <ClInclude Include="include\Users.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AirTicSystem.cpp" />
     <ClCompile Include="src\Common.cpp" />
     <ClCompile Include="src\Flight.cpp" />
+    <ClCompile Include="src\Users.cpp" />
     <ClCompile Include="Test_Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\RawData\admin.csv" />
+    <None Include="..\RawData\AirlineDataRAW_GBK.csv" />
+    <None Include="..\RawData\AirlineDataRAW_UTF8.csv" />
+    <None Include="..\RawData\AirlineDataTEST_GBK.csv" />
+    <None Include="..\RawData\AirlineDataTEST_UTF8.csv" />
+    <None Include="..\RawData\City_UTF8.csv" />
+    <None Include="..\RawData\Customer.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

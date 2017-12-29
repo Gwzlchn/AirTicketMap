@@ -9,7 +9,7 @@ using namespace std;
 
 
 
-	
+
 
 
 
@@ -26,35 +26,15 @@ void AirTicSystem::Create_Pos_Neg_From_Map()
 {
 	for (auto M_Iter = Ser_Flight_Map.begin();
 		M_Iter != Ser_Flight_Map.end(); M_Iter++) {
-		
-		//正图
-		Vertex_City*   New_Pos_V_T_Cy = new Vertex_City;
-		New_Pos_V_T_Cy->Edge_City_Head = NULL;
-		strcpy(New_Pos_V_T_Cy->Vertex_City_Short, M_Iter->second.T_City_Short);
-		
-		Edge_City* New_Pos_E_L_Cy = new Edge_City;
-		New_Pos_E_L_Cy->Next_Edge_City = NULL;
-		New_Pos_E_L_Cy->Flight_Serials.push_back(M_Iter->first);
-		strcpy(New_Pos_E_L_Cy->Edge_City_Short, M_Iter->second.L_City_Short);
 
-		Insert_Flight_To_Pos_OR_Neg_Graph(New_Pos_V_T_Cy, New_Pos_E_L_Cy, M_Iter->first,1);
 
-		//反图
-		Vertex_City*   New_Neg_V_L_Cy = new Vertex_City;
-		New_Neg_V_L_Cy->Edge_City_Head = NULL;
-		strcpy(New_Neg_V_L_Cy->Vertex_City_Short, M_Iter->second.L_City_Short);
-
-		Edge_City* New_Neg_E_T_Cy = new Edge_City;
-		New_Neg_E_T_Cy->Next_Edge_City = NULL;
-		New_Neg_E_T_Cy->Flight_Serials.push_back(M_Iter->first);
-		strcpy(New_Neg_E_T_Cy->Edge_City_Short, M_Iter->second.T_City_Short);
-
-		Insert_Flight_To_Pos_OR_Neg_Graph(New_Neg_V_L_Cy, New_Neg_E_T_Cy, M_Iter->first,2);
+		//正& 反
+		Insert_Flight_To_Pos_OR_Neg_Graph(M_Iter->second);
 
 
 	}
-		
-	
+
+
 
 }
 
@@ -78,7 +58,7 @@ void AirTicSystem::Create_Map_From_CSV(const char * File_Name)
 		{
 			Flight_Total_Count++;
 			Flight New_Flight = Create_New_Flight(infRow);
-			
+
 			//序列号 航班信息的映射
 			Ser_Flight_Map.insert({ New_Flight.Serial_NO ,New_Flight });
 			//航班号 序列号的映射
@@ -97,7 +77,7 @@ void AirTicSystem::Create_Map_From_CSV(const char * File_Name)
 //返回值>=0 出发城市在T_City_Vec中，值为索引，留给插入航班函数用
 //返回-2 不存在该顶点
 
-int AirTicSystem::Index_OF_Pos_OR_Neg_City_Vec(char V_City[3],int Vec_Choose)
+int AirTicSystem::Index_OF_Pos_OR_Neg_City_Vec(char V_City[3], int Vec_Choose)
 {
 	if (Vec_Choose == 1 || Vec_Choose == 2) {
 		vector<Vertex_City>& V_City_Vec = (Vec_Choose == 1) ? Pos_T_City_Vec : Neg_L_City_Vec;
@@ -105,7 +85,7 @@ int AirTicSystem::Index_OF_Pos_OR_Neg_City_Vec(char V_City[3],int Vec_Choose)
 		int V_Flag = 1, V_Index = -1;
 
 		for (auto V_Iter = V_City_Vec.begin();
-				V_Iter != V_City_Vec.end(); V_Iter++) {
+			V_Iter != V_City_Vec.end(); V_Iter++) {
 			V_Flag = strcmp((*V_Iter).Vertex_City_Short, V_City);
 			V_Index++;
 			if (V_Flag == 0) break;
@@ -150,8 +130,8 @@ int AirTicSystem::Search_Flight_ByID(string Flight_ID, Serials_Vec_Type& Serials
 	return Sers_Cnt;
 }
 
-int AirTicSystem::Index_OF_Pos_OR_Neg_City_Vec(Vertex_City* V_City, int Vector_Choose){
-	return Index_OF_Pos_OR_Neg_City_Vec(V_City->Vertex_City_Short,Vector_Choose);
+int AirTicSystem::Index_OF_Pos_OR_Neg_City_Vec(Vertex_City* V_City, int Vector_Choose) {
+	return Index_OF_Pos_OR_Neg_City_Vec(V_City->Vertex_City_Short, Vector_Choose);
 }
 
 
@@ -215,8 +195,8 @@ void AirTicSystem::Print_Flight_Serials_Vec_To_Terminal(Serials_Vec_Type& Serial
 
 //Vec_choose == 1 找正图 ==2 找反图
 bool AirTicSystem::Insert_Flight_To_Pos_OR_Neg_Graph(Vertex_City* V_City, Edge_City* E_City, const vector<string>& New_Ser_Vec, int Vec_Choose) {
-	
-	
+
+
 	if (Vec_Choose == 1 || Vec_Choose == 2) {
 		vector<Vertex_City>& V_City_Vec = (Vec_Choose == 1) ? Pos_T_City_Vec : Neg_L_City_Vec;
 
@@ -225,14 +205,14 @@ bool AirTicSystem::Insert_Flight_To_Pos_OR_Neg_Graph(Vertex_City* V_City, Edge_C
 
 		Serial_Type New_Ser;
 		Merge_Ser_Info(New_Ser, New_Ser_Vec);
-		
+
 		if (V_Index >= 0) {
 			Vertex_City Temp_V_Cy = V_City_Vec[V_Index];
 			Edge_City* E_Cy_Ptr = Temp_V_Cy.Edge_City_Head;
 
 			int E_Flag = 1;
 			for (; E_Cy_Ptr != NULL; E_Cy_Ptr = E_Cy_Ptr->Next_Edge_City) {
-					E_Flag = strcmp(E_City->Edge_City_Short, New_Ser_Vec[1].c_str());
+				E_Flag = strcmp(E_City->Edge_City_Short, New_Ser_Vec[1].c_str());
 				if (E_Flag == 0) break;
 			}
 
@@ -258,7 +238,7 @@ bool AirTicSystem::Insert_Flight_To_Pos_OR_Neg_Graph(Vertex_City* V_City, Edge_C
 	}
 	else
 		return false;
-	
+
 }
 
 
@@ -269,7 +249,7 @@ bool AirTicSystem::Insert_Flight_To_Pos_OR_Neg_Graph(Vertex_City* V_City, Edge_C
 
 	vector<string> New_Ser_Vec;
 	Split_Ser_Info(New_Ser_Str, New_Ser_Vec);
-	return Insert_Flight_To_Pos_OR_Neg_Graph(V_City, E_City, New_Ser_Vec,Vec_Choose);
+	return Insert_Flight_To_Pos_OR_Neg_Graph(V_City, E_City, New_Ser_Vec, Vec_Choose);
 }
 
 bool AirTicSystem::Insert_Flight_To_Pos_OR_Neg_Graph(Flight & New_Flight)
@@ -277,7 +257,7 @@ bool AirTicSystem::Insert_Flight_To_Pos_OR_Neg_Graph(Flight & New_Flight)
 	//正图
 	Vertex_City*   New_Pos_V_T_Cy = new Vertex_City;
 	New_Pos_V_T_Cy->Edge_City_Head = NULL;
-	strcpy(New_Pos_V_T_Cy->Vertex_City_Short,New_Flight.T_City_Short);
+	strcpy(New_Pos_V_T_Cy->Vertex_City_Short, New_Flight.T_City_Short);
 
 	Edge_City* New_Pos_E_L_Cy = new Edge_City;
 	New_Pos_E_L_Cy->Next_Edge_City = NULL;
@@ -298,8 +278,8 @@ bool AirTicSystem::Insert_Flight_To_Pos_OR_Neg_Graph(Flight & New_Flight)
 
 	Insert_Flight_To_Pos_OR_Neg_Graph(New_Neg_V_L_Cy, New_Neg_E_T_Cy, New_Flight.Serial_NO, 2);
 
-	
-	return false;
+
+	return true;
 }
 
 bool AirTicSystem::Insert_Flight_To_All(Flight& New_Flight)
@@ -310,12 +290,12 @@ bool AirTicSystem::Insert_Flight_To_All(Flight& New_Flight)
 		Ser_Flight_Map.insert({ New_Flight.Serial_NO,New_Flight });
 		FlightID_Ser_Map.insert({ New_Flight.Flight_ID,New_Flight.Serial_NO });
 	}
-	
+
 	//已存在相同航班
 	else
 		return false;
 }
- 
+
 bool AirTicSystem::Insert_Flight_To_All(vector<string>& Whole_Line_Data)
 {
 	Flight New_Flight = Create_New_Flight(Whole_Line_Data);
@@ -328,7 +308,7 @@ bool AirTicSystem::Insert_Flight_To_All(string Whole_Line_Raw)
 {
 	vector<string> Line_Data_Vec;
 	string sep = ",";
-	Split_Row(Whole_Line_Raw,sep, Line_Data_Vec);
+	Split_Row(Whole_Line_Raw, sep, Line_Data_Vec);
 	return Insert_Flight_To_All(Line_Data_Vec);
 }
 

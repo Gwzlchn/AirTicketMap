@@ -50,13 +50,6 @@ Flight Create_New_Flight(vector<string> Line_Data);
 Flight Create_New_Flight();
 
 
-struct Customer								//顾客信息
-{
-	Serials_Vec_Type Flight_Serials;	//购买的所有机票（保存流水号）
-	char Customer_Name[MSIZE];				//顾客姓名
-	char IDcard[LSIZE];						//身份证号
-	int Tic_Bought;							//该顾客名下所购机票数
-};
 
 
 #endif // !FLIGHT_HPP

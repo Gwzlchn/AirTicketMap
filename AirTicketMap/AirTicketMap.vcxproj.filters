@@ -44,6 +44,9 @@
     <ClCompile Include="src\Users.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="TestPython.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\RawData\admin.csv">
@@ -65,6 +68,12 @@
       <Filter>资源文件</Filter>
     </None>
     <None Include="..\RawData\Customer.csv">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="Test001.py">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="DrawMap.py">
       <Filter>资源文件</Filter>
     </None>
   </ItemGroup>

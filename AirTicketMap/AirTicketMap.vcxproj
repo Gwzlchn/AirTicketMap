@@ -69,7 +69,22 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>E:\Complier\Anaconda3\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\Complier\Anaconda3\libs;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>E:\Complier\Anaconda3\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\Complier\Anaconda3\libs;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>E:\Complier\Anaconda3\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\Complier\Anaconda3\libs;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>E:\Complier\Anaconda3\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\Complier\Anaconda3\libs;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -121,6 +136,7 @@
     <ClCompile Include="src\Common.cpp" />
     <ClCompile Include="src\Flight.cpp" />
     <ClCompile Include="src\Users.cpp" />
+    <ClCompile Include="TestPython.cpp" />
     <ClCompile Include="Test_Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +147,8 @@
     <None Include="..\RawData\AirlineDataTEST_UTF8.csv" />
     <None Include="..\RawData\City_UTF8.csv" />
     <None Include="..\RawData\Customer.csv" />
+    <None Include="DrawMap.py" />
+    <None Include="Test001.py" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

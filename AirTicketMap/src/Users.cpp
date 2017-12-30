@@ -145,11 +145,7 @@ int Admin_System::Check_Choose_All_Num() {
 
 
 int  Admin_System::A_OR_C_Choose(int Choice) {
-
-	if (!((Choice) == 1 || (Choice) == 2 || Choice == 0))
-		return 0;
-	else
-		return 1;
+	return (Choice == 1 || Choice == 2 || Choice == 0) ? 1 : 0;
 }
 
 

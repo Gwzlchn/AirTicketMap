@@ -44,12 +44,12 @@ def testMap(argv1=0, argv2=0, argv3=0):
 	plt.show()
 	
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
+	if len(sys.argv) > 1:
         #testMap(sys.argv[1], sys.argv[2], sys.argv[3])
-        for i in range(len(sys.argv)):
-            print(sys.argv[i])
-    else:
-        testMap()
+		for i in range(len(sys.argv)):
+			print(sys.argv[i])
+	else:
+		testMap()
 
 #map.etopo() # 绘制地形图，浮雕样式
 

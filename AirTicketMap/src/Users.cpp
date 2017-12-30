@@ -82,3 +82,21 @@ bool Admin_System::Is_Customer(string C_Name)
 	return true;
 }
 
+void Admin_System::Admin_Manage(AirTicSystem & Air_Tic_Data)
+{
+}
+
+int Admin_System::Admin_Choose_Func()
+{
+	return 0;
+}
+
+void Admin_System::Users_Mange(const AirTicSystem & Air_Tic_Data)
+{
+}
+
+int Admin_System::Users_Choose_Func()
+{
+	return 0;
+}
+

@@ -136,7 +136,7 @@
     <ClCompile Include="src\Common.cpp" />
     <ClCompile Include="src\Flight.cpp" />
     <ClCompile Include="src\Users.cpp" />
-    <ClCompile Include="TestPython.cpp" />
+    <ClCompile Include="Use_Python.cpp" />
     <ClCompile Include="Test_Main.cpp" />
   </ItemGroup>
   <ItemGroup>

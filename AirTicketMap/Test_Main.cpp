@@ -4,7 +4,7 @@
 
 
 
-const char* File_Name = "..\\RawData\\AirlineDataTEST_GBK.csv";
+const char* Flight_File_Name = "..\\RawData\\AirlineDataTEST_GBK.csv";
 using namespace std;
 const char * Admin_File = "..\\RawData\\admin.csv";
 const char * Cus_File = "..\\RawData\\Customer.csv";
@@ -35,7 +35,7 @@ int main() {
 	//cout << endl;
 	//test.Print_Flight_Serials_Vec_To_Terminal(Serials);
 
-	Admin_System A_And_C(Admin_File, Cus_File);
+	Admin_System A_And_C(Admin_File, Cus_File,Flight_File_Name);
 	char a;
 	cin >> a;
 	

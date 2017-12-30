@@ -1,4 +1,4 @@
-#include <stdio.h>
+ï»¿#include <stdio.h>
 #include <string.h>
 #include <windows.h>
 #define N 20
@@ -14,16 +14,16 @@ int identify()
 {
 	int choi=0;
 	printf("\n\n\t\t*****************************************************************\n");
-	printf("\t\t*\t\t\t»¶Ó­Ê¹ÓÃ·É»ú¶©Æ±ÏµÍ³\t\t\t*");
+	printf("\t\t*\t\t\tæ¬¢è¿ä½¿ç”¨é£æœºè®¢ç¥¨ç³»ç»Ÿ\t\t\t*");
 	printf("\n\t\t*****************************************************************\n");
-	printf("\t\t*\t\t\tÇëÑ¡ÔñµÇÂ½Í¨µÀ£º\t\t\t*\n");
-	printf("\t\t*\t\t\t1:¹ÜÀíÔ±Í¨µÀ\t\t\t\t*\n");
-	printf("\t\t*\t\t\t2:ÓÃ»§Í¨µÀ\t\t\t\t*\n");
-	printf("\t\t*\t\t\t0:ÍË³ö·É»ú¶©Æ±ÏµÍ³\t\t\t*\n");
+	printf("\t\t*\t\t\tè¯·é€‰æ‹©ç™»é™†é€šé“ï¼š\t\t\t*\n");
+	printf("\t\t*\t\t\t1:ç®¡ç†å‘˜é€šé“\t\t\t\t*\n");
+	printf("\t\t*\t\t\t2:ç”¨æˆ·é€šé“\t\t\t\t*\n");
+	printf("\t\t*\t\t\t0:é€€å‡ºé£æœºè®¢ç¥¨ç³»ç»Ÿ\t\t\t*\n");
 	printf("\t\t*****************************************************************\n");
 	while(1)
 	{
-		printf("\n\t\t\t\tÇëÊäÈëÄúµÄÑ¡Ôñ¡«£º");
+		printf("\n\t\t\t\tè¯·è¾“å…¥æ‚¨çš„é€‰æ‹©ï½ï¼š");
 		scanf("%d",&choi);
 		if(choi == 1)
 		{
@@ -38,11 +38,11 @@ int identify()
 		}
 		else
 		{
-			printf("\nÇëÖØĞÂÊäÈë(Ñ¡Ôñ1»òÕß2)\n");
+			printf("\nè¯·é‡æ–°è¾“å…¥(é€‰æ‹©1æˆ–è€…2)\n");
         }
 			if(choi==0)
 			{
-				printf("¿´À´ÄãÊÇÌúÁËĞÄÒªÍË³öÏµÍ³À²¡«»¶Ó­ÏÂ´ÎÊ¹ÓÃ¡«");
+				printf("çœ‹æ¥ä½ æ˜¯é“äº†å¿ƒè¦é€€å‡ºç³»ç»Ÿå•¦ï½æ¬¢è¿ä¸‹æ¬¡ä½¿ç”¨ï½");
 				exit(0);
 				break;
 			}
@@ -66,28 +66,28 @@ void identify_admin()
 
 	while(1)
 	{
-		printf("\n\n\t\t\t\tÓÃ»§Ãû£ºadmin\n");
-		printf("\t\t\t\tÃÜ Âë£º");
+		printf("\n\n\t\t\t\tç”¨æˆ·åï¼šadmin\n");
+		printf("\t\t\t\tå¯† ç ï¼š");
 		scanf("%s",admin_pwd);
 		fscanf(fp,"%s",admin_p);
         if(strcmp(admin_p,admin_pwd)==0)
         {
-            printf("\n\t\t\tÉí ·İ Ñé Ö¤ ³É ¹¦ !\t\t\t\n");
+            printf("\n\t\t\tèº« ä»½ éªŒ è¯ æˆ åŠŸ !\t\t\t\n");
             break;
         }
         else
         {
-        	printf("\nÃÜÂë´íÎó%d´Î£¡\n",cnt);
+        	printf("\nå¯†ç é”™è¯¯%dæ¬¡ï¼\n",cnt);
         	cnt++;
         	if(cnt==4)
         	{
-        		printf("\n\t\t\t\tÍü¼ÇÃÜÂëÁË£¿\n");
-        		printf("\n\t\t\t\t0.ÎÒÏëÔÙÊÔÊÔ\n");
-        		printf("\n\t\t\t\t1.ÎÒ²»ÖªµÀÃÜÂë\n");
-        		printf("\n\t\t\t\t2.ÎÒÒªÖØÖÃÃÜÂë\n");
+        		printf("\n\t\t\t\tå¿˜è®°å¯†ç äº†ï¼Ÿ\n");
+        		printf("\n\t\t\t\t0.æˆ‘æƒ³å†è¯•è¯•\n");
+        		printf("\n\t\t\t\t1.æˆ‘ä¸çŸ¥é“å¯†ç \n");
+        		printf("\n\t\t\t\t2.æˆ‘è¦é‡ç½®å¯†ç \n");
         		while(1)
 				{
-					printf("\n\t\t\t\tÇëÊäÈëÄúµÄÑ¡Ôñ¡«£º");
+					printf("\n\t\t\t\tè¯·è¾“å…¥æ‚¨çš„é€‰æ‹©ï½ï¼š");
 					scanf("%d",&choi);
 					if(choi == 0)
 					{
@@ -97,24 +97,24 @@ void identify_admin()
 					}
 					else if (choi == 1)
 					{
-						printf("\nĞÜº¢×Ó²»ÖªµÀÃÜÂë»¹À´µÇÂ½¹ÜÀíÔ±Í¨µÀ...\nÇ×£¬ÎÒ½«×Ô¶¯ÎªÄúÌø×ªÓÃ»§Í¨µÀ¡«\n");
+						printf("\nç†Šå­©å­ä¸çŸ¥é“å¯†ç è¿˜æ¥ç™»é™†ç®¡ç†å‘˜é€šé“...\näº²ï¼Œæˆ‘å°†è‡ªåŠ¨ä¸ºæ‚¨è·³è½¬ç”¨æˆ·é€šé“ï½\n");
 						identify_user();
 						break;
 					}
 					else if(choi == 2)
 					{
-						printf("\nÇëÊäÈëÖØÖÃÑéÖ¤Âë£º");
+						printf("\nè¯·è¾“å…¥é‡ç½®éªŒè¯ç ï¼š");
 						int yzm;
 						scanf("%d",&yzm);
 						if(yzm == 159)
 						{
-							printf("\nÑéÖ¤³É¹¦£¡ÇëÊäÈëÖØÖÃÃÜÂë£º");
+							printf("\néªŒè¯æˆåŠŸï¼è¯·è¾“å…¥é‡ç½®å¯†ç ï¼š");
 							scanf("%s",admin_new_pwd);
-							printf("\nÖØ¸´ÃÜÂë:");
+							printf("\né‡å¤å¯†ç :");
     						scanf("%s",admin_re_pwd);
     						if(strcmp(admin_new_pwd,admin_re_pwd)!=0)
 						    {
-						        printf("\nÁ½ ´Î Êä Èë ÃÜ Âë ²» Ò» ÖÂ , ÉÔ ºó ÔÙ ¼û £¡");
+						        printf("\nä¸¤ æ¬¡ è¾“ å…¥ å¯† ç  ä¸ ä¸€ è‡´ , ç¨ å å† è§ ï¼");
 						        identify_admin();
 						        return ;
 						    }
@@ -125,10 +125,10 @@ void identify_admin()
 					}
 					else
 					{
-						printf("\nÇëÖØĞÂÊäÈë¡«¡«\n");
+						printf("\nè¯·é‡æ–°è¾“å…¥ï½ï½\n");
 						if(choi==159)
 						{
-							printf("¿´À´ÄãÊÇÌúÁËĞÄÒªÍË³öÏµÍ³À²¡«»¶Ó­ÏÂ´ÎÊ¹ÓÃ¡«");
+							printf("çœ‹æ¥ä½ æ˜¯é“äº†å¿ƒè¦é€€å‡ºç³»ç»Ÿå•¦ï½æ¬¢è¿ä¸‹æ¬¡ä½¿ç”¨ï½");
 							exit(0);
 							break;
 						}
@@ -147,12 +147,12 @@ int identify_user()
     FILE *fp = fopen("urs_info.txt","r");
     fflush(stdin);
     printf("\n\n");
-    printf("\t\t\t\t\t\t»¶ Ó­ Ê¹ ÓÃ ·É »ú ¶© Æ± Ïµ Í³ \n");
+    printf("\t\t\t\t\t\tæ¬¢ è¿ ä½¿ ç”¨ é£ æœº è®¢ ç¥¨ ç³» ç»Ÿ \n");
     printf("\n\n\n\n\n");
     while(1)
     {
-		printf("\n\t\t\t\t1.ÎÒÒÑÓĞÕËºÅ\n\t\t\t\t0.ĞÂÓÃ»§×¢²á\n");
-		printf("\n\t\t\t\tÇëÊäÈëÄúµÄÑ¡Ôñ£º\n");
+		printf("\n\t\t\t\t1.æˆ‘å·²æœ‰è´¦å·\n\t\t\t\t0.æ–°ç”¨æˆ·æ³¨å†Œ\n");
+		printf("\n\t\t\t\tè¯·è¾“å…¥æ‚¨çš„é€‰æ‹©ï¼š\n");
 		scanf("%d",&result);
 		if(result == 1)
 		{
@@ -165,26 +165,26 @@ int identify_user()
 		}
 		else
 		{
-			printf("\nÇëÖØĞÂÊäÈë¡«¡«\n");
+			printf("\nè¯·é‡æ–°è¾“å…¥ï½ï½\n");
 			if(result==159)
 			{
-				printf("¿´À´ÄãÊÇÌúÁËĞÄÒªÍË³öÏµÍ³À²¡«»¶Ó­ÏÂ´ÎÊ¹ÓÃ¡«");
+				printf("çœ‹æ¥ä½ æ˜¯é“äº†å¿ƒè¦é€€å‡ºç³»ç»Ÿå•¦ï½æ¬¢è¿ä¸‹æ¬¡ä½¿ç”¨ï½");
 				exit(0);
 				break;
 			}
 		}
 	}
-	printf("\t\t\t\tÓÃ»§Ãû£º");
+	printf("\t\t\t\tç”¨æˆ·åï¼š");
 	scanf("%s",usr);
 	printf("\n\n\n");
-	printf("\t\t\t\tÃÜ  Âë£º");
+	printf("\t\t\t\tå¯†  ç ï¼š");
 	scanf("%s",pwd);
 	fflush(stdin);
 	while(fscanf(fp,"%s%s",u,p)!=EOF)
 	{
 		if(strcmp(u,usr)==0 && strcmp(p,pwd)==0)
 		{
-		    printf("\n\t\t\tÉí ·İ Ñé Ö¤ ³É ¹¦ !\t\t\t\n");
+		    printf("\n\t\t\tèº« ä»½ éªŒ è¯ æˆ åŠŸ !\t\t\t\n");
 		    mainmenu_user();
 		    return 1;
 		}
@@ -201,33 +201,33 @@ void mainmenu_user()
 	printf("\nnow you are in mainmenu_user\n");
 }
 
-void new_usr_info()              ///   ×¢²áĞÂÓÃ»§
+void new_usr_info()              ///   æ³¨å†Œæ–°ç”¨æˆ·
 {
     char new_usr[N],new_pwd[N],re_pwd[N];
     FILE *fp;
     int cnt = 0,result = 0;
-    printf("\n\n\t\t\t\t\t\t\tĞÂ ÓÃ »§ ×¢ ²á ´° ¿Ú \n\n");
-    printf("\t\t\t\tÓÃ»§Ãû£º");
+    printf("\n\n\t\t\t\t\t\t\tæ–° ç”¨ æˆ· æ³¨ å†Œ çª— å£ \n\n");
+    printf("\t\t\t\tç”¨æˆ·åï¼š");
     scanf("%s",new_usr);
-    printf("\n\n\t\t\t\tÃÜ  Âë£º");
+    printf("\n\n\t\t\t\tå¯†  ç ï¼š");
     scanf("%s",new_pwd);
-    printf("\n\n\t     \t\t\tÖØ¸´ÃÜÂë:");
+    printf("\n\n\t     \t\t\té‡å¤å¯†ç :");
     scanf("%s",re_pwd);
     if(strcmp(new_pwd,re_pwd)!=0)
     {
-        printf("\nÁ½ ´Î Êä Èë ÃÜ Âë ²» Ò» ÖÂ , Çë ÖØ ĞÂ Êä Èë £¡");
+        printf("\nä¸¤ æ¬¡ è¾“ å…¥ å¯† ç  ä¸ ä¸€ è‡´ , è¯· é‡ æ–° è¾“ å…¥ ï¼");
         new_usr_info();
         return ;
     }
     fp = fopen("urs_info.txt","a");
     fprintf(fp,"%s %s\n",new_usr,new_pwd);
     fclose(fp);
-    printf("\n        ×¢ ²á Ñé Ö¤ ³É ¹¦ !       \n");
+    printf("\n        æ³¨ å†Œ éªŒ è¯ æˆ åŠŸ !       \n");
     mainmenu_user();
 }
 
-int main()
-{
-    system("color 5E");
-	identify();
-}
+//int main()
+//{
+//    system("color 5E");
+//	identify();
+//}

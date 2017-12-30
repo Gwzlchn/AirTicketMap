@@ -5,6 +5,7 @@
 #include"AirTicSystem.hpp"
 
 
+typedef int(*Check_Ptr)(int);
 
 
 struct Customer								//顾客信息
@@ -27,7 +28,14 @@ private:
 	map<string, Admin> Admin_Map;
 public:
 
-	Admin_System(const char * Admin_File,const char * Cus_File_Name);
+
+	void Read_A_And_C_From_CSV(const char * Admin_File, const char * Cus_File);
+
+	Admin_System(const char * Admin_File,const char * Cus_File_Name,const char* Flight_File_Name);
+
+	bool Is_Admin_Pwd_Correct(string A_Name, string A_Pwd);
+
+	bool Is_Cus_Pwd_Correct(string C_Name, string C_Pwd);
 
 	bool Is_Admin(string A_Name);
 
@@ -36,8 +44,20 @@ public:
 	void Admin_Manage(AirTicSystem& Air_Tic_Data);
 	int Admin_Choose_Func();
 
-	void Users_Mange(const AirTicSystem& Air_Tic_Data);
+	void Users_Manage(const AirTicSystem & Air_Tic_Data);
+
+
 	int Users_Choose_Func();
+
+	int Check_Choose_All_Num();
+
+	int A_OR_C_Choose(int Choice);
+
+	int For_All_Choose(Check_Ptr Ptr);
+
+
+
+	void First_Identity(AirTicSystem & Air_Tics);
 
 	
 

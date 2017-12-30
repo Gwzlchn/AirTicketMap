@@ -47,6 +47,9 @@
     <ClCompile Include="Use_Python.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Login_NC.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\RawData\admin.csv">

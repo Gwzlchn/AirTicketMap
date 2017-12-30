@@ -49,11 +49,11 @@ public:
 
 	int Users_Choose_Func();
 
-	int Check_Choose_All_Num();
+	 int Check_Choose_All_Num();
 
-	int A_OR_C_Choose(int Choice);
+	static int A_OR_C_Choose(int Choice);
 
-	int For_All_Choose(Check_Ptr Ptr);
+	 int For_All_Choose(Check_Ptr Ptr);
 
 
 

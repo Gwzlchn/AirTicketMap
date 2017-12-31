@@ -1,5 +1,6 @@
-﻿#include "./include\AirTicSystem.hpp"
+﻿#include "./include/AirTicSystem.hpp"
 #include"./include/Users.hpp"
+#include"./include/Common.hpp"
 #include<iostream>
 
 
@@ -35,7 +36,15 @@ int main() {
 	//cout << endl;
 	//test.Print_Flight_Serials_Vec_To_Terminal(Serials);
 
-	Admin_System A_And_C(Admin_File, Cus_File,Flight_File_Name);
+	//Admin_System A_And_C(Admin_File, Cus_File,Flight_File_Name);
+	
+	char time[6] = "15:60";
+	int t = Char_Time_To_Int(time);
+	cout << t;
+
+	char date[11] = "2017/01/05";
+	long d = Char_Date_To_Long(date);
+	cout << d;
 	char a;
 	cin >> a;
 	

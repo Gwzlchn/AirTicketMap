@@ -44,6 +44,8 @@ public:
 	void Admin_Manage(AirTicSystem& Air_Tic_Data);
 	int Admin_Choose_Func();
 
+	static int Check_Admin_Choose(int Choice);
+
 	void Users_Manage(const AirTicSystem & Air_Tic_Data);
 
 
@@ -51,9 +53,9 @@ public:
 
 	 int Check_Choose_All_Num();
 
-	static int A_OR_C_Choose(int Choice);
+	static int Check_A_OR_C_Choose(int Choice);
 
-	 int For_All_Choose(Check_Ptr Ptr);
+	 int For_All_Check(Check_Ptr Ptr);
 
 
 

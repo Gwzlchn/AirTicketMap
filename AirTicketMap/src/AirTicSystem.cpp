@@ -77,7 +77,7 @@ void AirTicSystem::Create_Map_From_CSV(const char * File_Name)
 //返回值>=0 出发城市在T_City_Vec中，值为索引，留给插入航班函数用
 //返回-2 不存在该顶点
 
-int AirTicSystem::Index_OF_Pos_OR_Neg_City_Vec(char V_City[3], int Vec_Choose)
+int AirTicSystem::Index_OF_Pos_OR_Neg_City_Vec(char V_City[4], int Vec_Choose)
 {
 	if (Vec_Choose == 1 || Vec_Choose == 2) {
 		vector<Vertex_City>& V_City_Vec = (Vec_Choose == 1) ? Pos_T_City_Vec : Neg_L_City_Vec;
@@ -312,6 +312,94 @@ bool AirTicSystem::Insert_Flight_To_All(string Whole_Line_Raw)
 	return Insert_Flight_To_All(Line_Data_Vec);
 }
 
+
+
+int AirTicSystem::Search_Flight_In_Gragh_Time
+(char V_City[4], char E_City[4], char T_Time[6], char L_Time[6], char T_Data[11], Serials_Vec_Type& Ser_Vec, int Vec_Choose) 
+{
+	int Flag = Search_Flight_In_Gragh(V_City, E_City, Ser_Vec, Vec_Choose);
+	if (Flag <= 1)
+		return Flag;
+	else if (Flag == 2) {
+		;
+	}
+		
+}
+
+//按时间筛选流水号
+//符合条件流水号的压入Time_Vec中
+void AirTicSystem::Rank_Ser_Vec_Time(char T_Time[6], char L_Time[6], char T_Date[11],const Serials_Vec_Type& Raw_Vec, Serials_Vec_Type& Time_Vec) 
+{
+	
+	if (Raw_Vec.size() != 0) {
+		int T_Time_Int = Char_Time_To_Int(T_Time);
+		int L_Time_Int = Char_Time_To_Int(L_Time);
+
+		long T_Date_Int = Char_Date_To_Long(T_Date);
+
+		for (auto R_Iter = Raw_Vec.begin(); R_Iter != Raw_Vec.end(); R_Iter++) {
+			vector<string> One_Ser_Vec;
+			Split_Ser_Info((*R_Iter), One_Ser_Vec);
+			
+			
+			int T_Time_Raw = Char_Time_To_Int(const_cast<char *>(One_Ser_Vec[3].substr(8, 4).c_str()));
+			int L_Time_Raw = Char_Time_To_Int(const_cast<char *>(One_Ser_Vec[4].c_str()));
+			long T_Date_Raw = Char_Date_To_Long(const_cast<char *>(One_Ser_Vec[3].substr(0, 8).c_str()));
+
+
+			if (T_Date_Int <= T_Date_Raw) {
+				if (T_Time_Int <= T_Time_Raw) {
+					Time_Vec.push_back((*R_Iter));
+				}
+			}
+
+
+		}
+	}
+}
+
+
+//将流水号 按价格排序
+void AirTicSystem::Rank_Ser_Vec_Price(Serials_Vec_Type& Raw_Vec, Serials_Vec_Type& Rank_Vec) {
+
+}
+
+
+
+
+
+//返回-3 选择不对
+//返回-2 无顶点城市
+//返回 2 成功
+//返回 1 无边城市
+int AirTicSystem::Search_Flight_In_Gragh(char V_City[4], char E_City[4], Serials_Vec_Type& Ser_Vec,int Vec_Choose) {
+	if (Vec_Choose == 1 || Vec_Choose == 2) {
+		vector<Vertex_City>& V_City_Vec = (Vec_Choose == 1) ? Pos_T_City_Vec : Neg_L_City_Vec;
+		
+		int V_Index = Index_OF_Pos_OR_Neg_City_Vec(V_City, Vec_Choose);
+		if (V_Index < 0)
+			return -2;
+		else {
+			auto  E_Ptr = V_City_Vec[V_Index].Edge_City_Head;
+			int E_Flag = 1;
+			for (; E_Ptr != NULL; E_Ptr = E_Ptr->Next_Edge_City) {
+				E_Flag = strcmp(E_Ptr->Edge_City_Short, E_City);
+				if (E_Flag == 0) break;
+			}
+			if (E_Flag == 0) {
+				Ser_Vec.assign(E_Ptr->Flight_Serials.begin(), E_Ptr->Flight_Serials.end());
+				return 2;
+			}
+			else
+				return 1;
+				
+		}
+		
+
+	}
+	return -3;
+	
+}
 
 
 

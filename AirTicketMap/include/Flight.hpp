@@ -44,7 +44,7 @@ struct Flight							//航班信息
 	int Max_Seats;						//满载人员		16
 	int Cur_Order;						//当前已定人数	17
 
-	Serial_Type  Serial_NO;			//机票流水号 = 起飞机场 + 降落机场 + 航班号 +　起飞时间戳 +　降落时刻
+	Serial_Type  Serial_NO;			//机票流水号 = 起飞机场0 + 降落机场1 + 航班号2 +　起飞时间戳3 +　降落时刻4
 };
 Flight Create_New_Flight(vector<string> Line_Data);
 Flight Create_New_Flight();

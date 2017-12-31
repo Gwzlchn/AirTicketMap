@@ -112,12 +112,26 @@ bool Admin_System::Is_Customer(string C_Name)
 
 void Admin_System::Admin_Manage(AirTicSystem & Air_Tic_Data)
 {
+	
+	for (int A_Choose = Admin_Choose_Func();
+		A_Choose != 0; A_Choose = Admin_Choose_Func()) {
+
+	}
 }
 
 int Admin_System::Admin_Choose_Func()
 {
+	
 	return 0;
 }
+
+int Admin_System::Check_Admin_Choose(int Choice) {
+	return (Choice == 1 || Choice == 2 || Choice == 0) ? 1 : 0;
+}
+
+
+
+
 
 void Admin_System::Users_Manage(const AirTicSystem & Air_Tic_Data)
 {
@@ -144,12 +158,12 @@ int Admin_System::Check_Choose_All_Num() {
 }
 
 
-int  Admin_System::A_OR_C_Choose(int Choice) {
+int  Admin_System::Check_A_OR_C_Choose(int Choice) {
 	return (Choice == 1 || Choice == 2 || Choice == 0) ? 1 : 0;
 }
 
 
- int Admin_System::For_All_Choose(Check_Ptr Ptr) {
+ int Admin_System::For_All_Check(Check_Ptr Ptr) {
 	cout << "请输入你的选择\t";
 	int Choose = Check_Choose_All_Num();
 	while (!Ptr(Choose) ){
@@ -172,10 +186,11 @@ void Admin_System::First_Identity(AirTicSystem& Air_Tics)
 	printf("\t\t*\t\t\t2:用户通道\t\t\t\t*\n");
 	printf("\t\t*\t\t\t0:退出飞机订票系统\t\t\t*\n");
 	printf("\t\t*****************************************************************\n");
+
 	
 	
-	for (A_OR_C = For_All_Choose(A_OR_C_Choose);
-		A_OR_C != 0; A_OR_C = For_All_Choose(A_OR_C_Choose)) {
+	for (A_OR_C = For_All_Check(Check_A_OR_C_Choose);
+		A_OR_C != 0; A_OR_C = For_All_Check(Check_A_OR_C_Choose)) {
 		
 		switch (A_OR_C)
 		{

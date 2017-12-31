@@ -64,6 +64,7 @@ public:
 
 	void Print_ALL_To_Terminal();
 	void Print_ALL_To_File(const char* File_Name);
+
 	void Print_Flight_To_Termimal(Flight& One_Flight);
 	void Print_Flight_Vec_To_Terminal(vector<Flight>& Flight_Vec);
 	void Print_Flight_Serials_Vec_To_Terminal(Serials_Vec_Type& Serials_Vec);
@@ -76,6 +77,14 @@ public:
 	bool Insert_Flight_To_All(Flight& New_Flight);
 	bool Insert_Flight_To_All(vector<string>& Whole_Line_Data);
 	bool Insert_Flight_To_All(string Whole_Line_Raw);
+
+	int Search_Flight_In_Gragh_Time(char V_City[4], char E_City[4], char T_Time[6], char L_Time[6], char T_Data[11],Serials_Vec_Type & Ser_Vec, int Vec_Choose);
+
+	void Rank_Ser_Vec_Time(char T_Time[6], char L_Time[6], char T_Data[11], const Serials_Vec_Type & Raw_Vec, Serials_Vec_Type & Time_Vec);
+
+	void Rank_Ser_Vec_Price(Serials_Vec_Type & Raw_Vec, Serials_Vec_Type & Rank_Vec);
+
+	int Search_Flight_In_Gragh(char V_City[4], char E_City[4], Serials_Vec_Type& Ser_Vec, int Vec_Choose);
 	
 
 

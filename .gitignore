@@ -259,3 +259,5 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/AirTicketMap/新建文件夹
+/AirTicketMap/新建文件夹.zip

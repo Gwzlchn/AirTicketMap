@@ -77,7 +77,7 @@ void AirTicSystem::Create_Map_From_CSV(const char * File_Name)
 //返回值>=0 出发城市在T_City_Vec中，值为索引，留给插入航班函数用
 //返回-2 不存在该顶点
 
-int AirTicSystem::Index_OF_Pos_OR_Neg_City_Vec(char V_City[4], int Vec_Choose)
+int AirTicSystem::Index_OF_Pos_OR_Neg_City_Vec(char V_City[], int Vec_Choose)
 {
 	if (Vec_Choose == 1 || Vec_Choose == 2) {
 		vector<Vertex_City>& V_City_Vec = (Vec_Choose == 1) ? Pos_T_City_Vec : Neg_L_City_Vec;
@@ -141,11 +141,13 @@ int AirTicSystem::Index_OF_Pos_OR_Neg_City_Vec(Vertex_City* V_City, int Vector_C
 
 void AirTicSystem::Split_Ser_Info(Serial_Type Serial, vector<string>& A_Ser_Vec)
 {
-	A_Ser_Vec.push_back(Serial.substr(0, 3));
-	A_Ser_Vec.push_back(Serial.substr(3, 3));
-	A_Ser_Vec.push_back(Serial.substr(6, 6));
-	A_Ser_Vec.push_back(Serial.substr(12, 12));
-	A_Ser_Vec.push_back(Serial.substr(24, 4));
+	A_Ser_Vec.push_back(Serial.substr(0, 3));	//起飞机场 0
+	A_Ser_Vec.push_back(Serial.substr(3, 3));	//到达机场 1
+	A_Ser_Vec.push_back(Serial.substr(6, 6));	//航班号   2
+	A_Ser_Vec.push_back(Serial.substr(12, 8));	//起飞日期 3
+	A_Ser_Vec.push_back(Serial.substr(20, 4));	//起飞时刻 4
+	A_Ser_Vec.push_back(Serial.substr(24, 8));	//到达日期 5
+	A_Ser_Vec.push_back(Serial.substr(32, 4));	//到达时刻 6
 }
 
 void AirTicSystem::Merge_Ser_Info(Serial_Type & Serial, vector<string> A_Ser_Vec)
@@ -164,8 +166,9 @@ void AirTicSystem::Print_Flight_To_Termimal(Flight& One_Flight)
 	cout << " " << One_Flight.T_City
 		<< "  " << One_Flight.L_City
 		<< "  " << One_Flight.Flight_ID
-		<< "  " << One_Flight.Date
+		<< "  " << One_Flight.T_Date
 		<< "  " << One_Flight.T_Time
+		<< "  " << One_Flight.L_Date
 		<< "  " << One_Flight.L_Time
 		<< "  " << One_Flight.Aircraft_Type
 		<< "  " << One_Flight.Tic_Price
@@ -286,6 +289,7 @@ bool AirTicSystem::Insert_Flight_To_All(Flight& New_Flight)
 {
 	auto S_M_Iter = Ser_Flight_Map.find(New_Flight.Serial_NO);
 	if (S_M_Iter == Ser_Flight_Map.end()) {
+		
 		Insert_Flight_To_Pos_OR_Neg_Graph(New_Flight);
 		Ser_Flight_Map.insert({ New_Flight.Serial_NO,New_Flight });
 		FlightID_Ser_Map.insert({ New_Flight.Flight_ID,New_Flight.Serial_NO });
@@ -314,65 +318,168 @@ bool AirTicSystem::Insert_Flight_To_All(string Whole_Line_Raw)
 
 
 
-int AirTicSystem::Search_Flight_In_Gragh_Time
-(char V_City[4], char E_City[4], char T_Time[6], char L_Time[6], char T_Data[11], Serials_Vec_Type& Ser_Vec, int Vec_Choose) 
+
+
+
+
+
+
+
+void AirTicSystem::Fliter_Ser_Vec_By_T_Date_Time(char T_Date[], char T_Time[], const Serials_Vec_Type& Raw_Vec, Serials_Vec_Type& Date_Vec) 
 {
-	int Flag = Search_Flight_In_Gragh(V_City, E_City, Ser_Vec, Vec_Choose);
-	if (Flag <= 1)
-		return Flag;
-	else if (Flag == 2) {
-		;
-	}
-		
+	long T_Date_Long = Char_Date_To_Long(T_Date);
+	int T_Time_Int = Char_Date_To_Long(T_Time);
+	Fliter_Ser_Vec_By_T_Date_Time(T_Date_Long, T_Time_Int, Raw_Vec, Date_Vec);
+	
+	return;
 }
 
-//按时间筛选流水号
-//符合条件流水号的压入Time_Vec中
-void AirTicSystem::Rank_Ser_Vec_Time(char T_Time[6], char L_Time[6], char T_Date[11],const Serials_Vec_Type& Raw_Vec, Serials_Vec_Type& Time_Vec) 
-{
-	
+//使用该函数之前 流水号已经筛选为确定日期
+//出发日期、时间作为过滤器，过滤Raw_Vec中流水号，符合条件压入Date_Vec
+void AirTicSystem::Fliter_Ser_Vec_By_T_Date_Time(long T_Date,int T_Time, const Serials_Vec_Type& Raw_Vec, Serials_Vec_Type& Date_Vec) {
+
 	if (Raw_Vec.size() != 0) {
-		int T_Time_Int = Char_Time_To_Int(T_Time);
-		int L_Time_Int = Char_Time_To_Int(L_Time);
+		for (auto R_Iter = Raw_Vec.begin();
+			R_Iter != Raw_Vec.end(); R_Iter++) {
+			vector<string> Raw_Ser_Vec;
+			Split_Ser_Info((*R_Iter), Raw_Ser_Vec);
 
-		long T_Date_Int = Char_Date_To_Long(T_Date);
-
-		for (auto R_Iter = Raw_Vec.begin(); R_Iter != Raw_Vec.end(); R_Iter++) {
-			vector<string> One_Ser_Vec;
-			Split_Ser_Info((*R_Iter), One_Ser_Vec);
-			
-			
-			int T_Time_Raw = Char_Time_To_Int(const_cast<char *>(One_Ser_Vec[3].substr(8, 4).c_str()));
-			int L_Time_Raw = Char_Time_To_Int(const_cast<char *>(One_Ser_Vec[4].c_str()));
-			long T_Date_Raw = Char_Date_To_Long(const_cast<char *>(One_Ser_Vec[3].substr(0, 8).c_str()));
-
-
-			if (T_Date_Int <= T_Date_Raw) {
-				if (T_Time_Int <= T_Time_Raw) {
-					Time_Vec.push_back((*R_Iter));
-				}
-			}
-
+			long R_T_Date = stoi(Raw_Ser_Vec[4]);
+			long R_T_Time = stol(Raw_Ser_Vec[5]);
+			if ((R_T_Date >= T_Date) && ( R_T_Time <= T_Time))
+				Date_Vec.push_back(*R_Iter);
 
 		}
+		return;
 	}
+	return;
 }
 
 
-//将流水号 按价格排序
-void AirTicSystem::Rank_Ser_Vec_Price(Serials_Vec_Type& Raw_Vec, Serials_Vec_Type& Rank_Vec) {
+//两个正常字符串日期作为过滤器，过滤流水号，详细见下面用long的
+void AirTicSystem::Fliter_Ser_Vec_By_Date(char T_Date[], char L_Date[], const Serials_Vec_Type& Raw_Vec, Serials_Vec_Type& Date_Vec) {
+	long T_Long = Char_Date_To_Long(T_Date);
+	long L_Long = Char_Date_To_Long(L_Date);
+	Fliter_Ser_Vec_By_Date(T_Long, L_Long, Raw_Vec, Date_Vec);
+	return;
+}
 
+
+
+//两个long int日期作为过滤器，过滤Raw_Vec中流水号，符合条件压入Date_Vec
+void AirTicSystem::Fliter_Ser_Vec_By_Date(long T_Date, long L_Date, const Serials_Vec_Type& Raw_Vec, Serials_Vec_Type& Date_Vec) {
+	
+	if (Raw_Vec.size() != 0) {
+		for (auto R_Iter = Raw_Vec.begin();
+			R_Iter != Raw_Vec.end(); R_Iter++) {
+			vector<string> Raw_Ser_Vec;
+			Split_Ser_Info((*R_Iter), Raw_Ser_Vec);
+
+			long R_T_Date = stol(Raw_Ser_Vec[3]);
+			long R_L_Date = stol(Raw_Ser_Vec[5]);
+			if ((R_T_Date >= T_Date) && (R_L_Date <= L_Date))
+				Date_Vec.push_back(*R_Iter);
+
+		}
+		return;
+	}
+	return;
+}
+
+
+//将流水号 按起飞时间从小到大排序
+void AirTicSystem::Rank_Ser_Vec_T_Time(const Serials_Vec_Type& Raw_Vec, Serials_Vec_Type& Rank_Vec) {
+	multimap<unsigned long long, Serial_Type>  T_Time_Ser_Map;
+	for (auto R_V_Iter = Raw_Vec.begin();
+		R_V_Iter != Raw_Vec.end(); R_V_Iter++) {
+		vector<string> Ser_Vec;
+		Split_Ser_Info((*R_V_Iter), Ser_Vec);
+		
+		unsigned long long  T_Time_Stamp = stoi(Ser_Vec[3])*10000 + stoi(Ser_Vec[4]);
+		T_Time_Ser_Map.insert({ T_Time_Stamp,(*R_V_Iter) });
+	}
+
+	for (auto T_Iter = T_Time_Ser_Map.begin();
+		T_Iter != T_Time_Ser_Map.end(); T_Iter++) {
+		Rank_Vec.push_back(T_Iter->second);
+	}
+	return;
+
+
+}
+
+
+//将流水号 按价格从低到高排序
+void AirTicSystem::Rank_Ser_Vec_Price(const Serials_Vec_Type& Raw_Vec, Serials_Vec_Type& Rank_Vec) {
+	if (Raw_Vec.size() != 0) {
+		//价格 - 流水号的映射（插入是有序的）
+		multimap<float, Serial_Type>  Price_Ser_Map;
+		for (auto R_V_Iter = Raw_Vec.begin();
+			R_V_Iter != Raw_Vec.end(); R_V_Iter++) {
+			Flight Temp_Flight;
+			Search_Flight((*R_V_Iter), Temp_Flight);
+			float Temp_Price = Temp_Flight.Tic_Price;
+			Price_Ser_Map.insert({ Temp_Price,(*R_V_Iter) });
+		}
+
+		for (auto P_Iter = Price_Ser_Map.begin();
+			P_Iter != Price_Ser_Map.end(); P_Iter++) {
+			Rank_Vec.push_back(P_Iter->second);
+		}
+		return;
+	}
+	return;
 }
 
 
 
 
+
+
+//把该顶点城市的所有航班 均压入向量
+//正图 1 ： 从V_City出发
+//反图　2 ：　到达V_City
 
 //返回-3 选择不对
 //返回-2 无顶点城市
 //返回 2 成功
+
+int AirTicSystem::Search_Flight_V_City_All(char V_City[], Serials_Vec_Type& Ser_Vec, int Vec_Choose) {
+	if (Vec_Choose == 1 || Vec_Choose == 2) {
+		vector<Vertex_City>& V_City_Vec = (Vec_Choose == 1) ? Pos_T_City_Vec : Neg_L_City_Vec;
+
+		int V_Index = Index_OF_Pos_OR_Neg_City_Vec(V_City, Vec_Choose);
+		if (V_Index < 0)
+			return -2;
+		else {
+			auto  E_Ptr = V_City_Vec[V_Index].Edge_City_Head;
+			int E_Flag = 1;
+			for (; E_Ptr != NULL; E_Ptr = E_Ptr->Next_Edge_City) {
+				Ser_Vec.insert(Ser_Vec.end(), E_Ptr->Flight_Serials.begin(), E_Ptr->Flight_Serials.end());
+			}
+			return 2;
+
+		}
+
+
+	}
+	return -3;
+}
+
+
+
+
+
+
+
+
+
+//这个函数是搜索直达的
+//返回-3 选择不对
+//返回-2 无顶点城市
+//返回 2 成功
 //返回 1 无边城市
-int AirTicSystem::Search_Flight_In_Gragh(char V_City[4], char E_City[4], Serials_Vec_Type& Ser_Vec,int Vec_Choose) {
+int AirTicSystem::Search_Flight_In_Gragh(char V_City[], char E_City[], Serials_Vec_Type& Ser_Vec,int Vec_Choose) {
 	if (Vec_Choose == 1 || Vec_Choose == 2) {
 		vector<Vertex_City>& V_City_Vec = (Vec_Choose == 1) ? Pos_T_City_Vec : Neg_L_City_Vec;
 		

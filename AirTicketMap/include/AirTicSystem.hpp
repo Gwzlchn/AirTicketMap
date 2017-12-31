@@ -78,13 +78,30 @@ public:
 	bool Insert_Flight_To_All(vector<string>& Whole_Line_Data);
 	bool Insert_Flight_To_All(string Whole_Line_Raw);
 
-	int Search_Flight_In_Gragh_Time(char V_City[4], char E_City[4], char T_Time[6], char L_Time[6], char T_Data[11],Serials_Vec_Type & Ser_Vec, int Vec_Choose);
+	//int Search_Flight_In_Gragh_Time(char V_City[4], char E_City[4], char T_Time[6], char L_Time[6], char T_Data[11],Serials_Vec_Type & Ser_Vec, int Vec_Choose);
 
-	void Rank_Ser_Vec_Time(char T_Time[6], char L_Time[6], char T_Data[11], const Serials_Vec_Type & Raw_Vec, Serials_Vec_Type & Time_Vec);
+	
 
-	void Rank_Ser_Vec_Price(Serials_Vec_Type & Raw_Vec, Serials_Vec_Type & Rank_Vec);
 
-	int Search_Flight_In_Gragh(char V_City[4], char E_City[4], Serials_Vec_Type& Ser_Vec, int Vec_Choose);
+
+	void Fliter_Ser_Vec_By_T_Date_Time(char T_Date[], char T_Time[], const Serials_Vec_Type& Raw_Vec, Serials_Vec_Type& Date_Vec);
+	void Fliter_Ser_Vec_By_T_Date_Time(long T_Date, int T_Time, const Serials_Vec_Type & Raw_Vec, Serials_Vec_Type & Date_Vec);
+
+
+	void Fliter_Ser_Vec_By_Date(char T_Date[], char L_Date[], const Serials_Vec_Type & Raw_Vec, Serials_Vec_Type & Date_Vec);
+	void Fliter_Ser_Vec_By_Date(long T_Date, long L_Date, const Serials_Vec_Type & Raw_Vec, Serials_Vec_Type & Date_Vec);
+
+
+
+	//排序函数
+	void Rank_Ser_Vec_T_Time(const Serials_Vec_Type & Raw_Vec, Serials_Vec_Type & Rank_Vec);
+	void Rank_Ser_Vec_Price(const Serials_Vec_Type & Raw_Vec, Serials_Vec_Type & Rank_Vec);
+
+
+
+	int Search_Flight_V_City_All(char V_City[], Serials_Vec_Type & Ser_Vec, int Vec_Choose);
+
+	int Search_Flight_In_Gragh(char V_City[], char E_City[], Serials_Vec_Type& Ser_Vec, int Vec_Choose);
 	
 
 
@@ -100,7 +117,7 @@ public:
 	//int Index_OF_T_City_Vec(Flight_Serial_Type& Flight_Ser);
 	//int Index_OF_T_City_Vec(vector<string>& Ser_Info);
 	int Index_OF_Pos_OR_Neg_City_Vec(Vertex_City* V_City, int Vector_Choose);
-	int Index_OF_Pos_OR_Neg_City_Vec(char V_City[3], int Vec_Choose);
+	int Index_OF_Pos_OR_Neg_City_Vec(char V_City[], int Vec_Choose);
 
 
 	//分离流水号

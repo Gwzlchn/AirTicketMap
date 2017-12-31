@@ -37,7 +37,6 @@ void  Admin_System::Read_A_And_C_From_CSV(const char * Admin_File, const char * 
 
 	string C_Row;
 	getline(C_File, C_Row);
-	infRow.clear();
 	while (C_File.good())
 	{
 		getline(C_File, C_Row);

@@ -68,7 +68,7 @@ int Char_Time_To_Int(char C_Time[6])
 
 }
 
-long Char_Date_To_Long(char C_Date[11])
+long Char_Date_To_Long(char C_Date[])
 {
 	vector<string> D_Vec;
 	string sep = "/";

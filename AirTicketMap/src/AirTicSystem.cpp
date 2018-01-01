@@ -509,6 +509,33 @@ int AirTicSystem::Search_Flight_In_Gragh(char V_City[], char E_City[], Serials_V
 }
 
 
+//搜索两个城市 之间一次中转
+
+void AirTicSystem::Search_Transit(char T_City[], char L_City[], multimap<Serial_Type,Serial_Type>& Sers_Map) {
+
+	Serials_Vec_Type T_Sers,L_Sers;
+	Search_Flight_V_City_All(T_City, T_Sers, 1);
+	Search_Flight_V_City_All(L_City, L_Sers, 2);
+	vector<string> T_Ser_Vec, L_Ser_Vec;
+
+	if ((T_Sers.size() != 0) && (L_Sers.size() != 0)) {
+		for (auto T_Iter = T_Sers.begin();
+			T_Iter != T_Sers.end(); T_Iter++) {
+			Split_Ser_Info((*T_Iter), T_Ser_Vec);
+			for (auto L_Iter = L_Sers.begin();
+				L_Iter != L_Sers.end(); L_Iter++) {
+				Split_Ser_Info((*L_Iter), L_Ser_Vec);
+
+				if (T_Ser_Vec[1] == L_Ser_Vec[0])
+					Sers_Map.insert({ (*T_Iter),(*L_Iter) });
+
+			}
+		}
+	}
+
+
+}
+
 
 
 

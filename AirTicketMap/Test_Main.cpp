@@ -5,7 +5,8 @@
 
 
 
-const char* Flight_File_Name = "..\\RawData\\AirlineDataTEST_GBK.csv";
+//const char* Flight_File_Name = "..\\RawData\\AirlineDataTEST_GBK.csv";
+const char* Flight_File_Name = "..\\RawData\\test_transit.csv";
 using namespace std;
 const char * Admin_File = "..\\RawData\\admin.csv";
 const char * Cus_File = "..\\RawData\\Customer.csv";
@@ -21,6 +22,11 @@ int main() {
 	string New_Line_Data = "阿勒泰,AAT,乌鲁木齐,URC,中国南方航空(集团)公司,CZ6684,阿勒泰机场,地窝堡国际机场,2017/11/01,11:11,201711011111,2017/11/01,12:20,201711011220,AT7,1864,0.27,260,251";
 	test.Insert_Flight_To_All(New_Line_Data);
 	
+	multimap<Serial_Type, Serial_Type> Test_Transit;
+	test.Search_Transit("BAV", "CTU", Test_Transit);
+	
+
+
 	/*Flight Ans_Flight;
 	Ans_Flight = Create_New_Flight();
 
@@ -38,6 +44,9 @@ int main() {
 	Serials_Vec_Type Sers;
 	char Test_V_City[4] = "BAV";
 	test.Search_Flight_V_City_All(Test_V_City, Sers, 1);
+
+
+	
 
 	//Admin_System A_And_C(Admin_File, Cus_File,Flight_File_Name);
 	

@@ -5,12 +5,12 @@
 #include"Flight.hpp"
 #include<map>
 #include<unordered_map>
-
+#include<utility>
 
 
 using	std::multimap;
 using	std::map;
-
+using   std::pair;
 
 
 
@@ -66,7 +66,9 @@ public:
 	void Print_ALL_To_File(const char* File_Name);
 
 	void Print_Flight_To_Termimal(Flight& One_Flight);
-	void Print_Flight_Vec_To_Terminal(vector<Flight>& Flight_Vec);
+	void Print_Flight_To_Termimal_In_Ser(Serial_Type One_Ser);
+	
+	void Print_Flight_All_In_Sys_To_Terminal();
 	void Print_Flight_Serials_Vec_To_Terminal(Serials_Vec_Type& Serials_Vec);
 
 	//插入到边链表 正图+反图
@@ -106,6 +108,8 @@ public:
 	void Search_Transit(char T_City[], char L_City[], multimap<Serial_Type, Serial_Type>& Sers_Map);
 
 	void Search_Transit(Serials_Vec_Type T_Sers, Serials_Vec_Type L_Sers, multimap<Serial_Type, Serial_Type>& Sers_Map);
+
+	void Rank_Ser_Map_Price(const multimap<Serial_Type, Serial_Type>& Sers_Map, multimap<float, pair<Serial_Type, Serial_Type>>& Sers_Map_In_Price);
 
 	Serials_Vec_Type Book_The_Flight();
 	

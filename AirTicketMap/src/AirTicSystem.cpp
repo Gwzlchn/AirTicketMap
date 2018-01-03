@@ -164,9 +164,9 @@ void AirTicSystem::Merge_Ser_Info(Serial_Type & Serial, vector<string> A_Ser_Vec
 
 void AirTicSystem::Print_Flight_To_Termimal(Flight& One_Flight)
 {
-	cout << " " << One_Flight.T_City
-		<< "  " << One_Flight.L_City
-		<< "  " << One_Flight.Flight_ID
+	cout << "" << One_Flight.T_City
+		<< "\t" << One_Flight.L_City
+		<< "\t\t" << One_Flight.Flight_ID
 		<< "  " << One_Flight.T_Date
 		<< "  " << One_Flight.T_Time
 		<< "  " << One_Flight.L_Date
@@ -174,15 +174,28 @@ void AirTicSystem::Print_Flight_To_Termimal(Flight& One_Flight)
 		<< "  " << One_Flight.Aircraft_Type
 		<< "  " << One_Flight.Tic_Price
 		<< "  " << One_Flight.Max_Seats
-		<< "  " << One_Flight.Cur_Order
-		<< endl;
+		<< "  " << One_Flight.Cur_Order;
+	if (One_Flight.Max_Seats > One_Flight.Cur_Order)
+		cout << "  未满仓" << endl;
+	else
+		cout << "  已满仓" << endl;
 }
 
-void AirTicSystem::Print_Flight_Vec_To_Terminal(vector<Flight>& Flight_Vec)
+
+void AirTicSystem::Print_Flight_To_Termimal_In_Ser(Serial_Type One_Ser)
 {
-	for (auto F_Iter = Flight_Vec.begin();
-		F_Iter != Flight_Vec.end(); F_Iter++)
-		Print_Flight_To_Termimal((*F_Iter));
+	Flight Temp_Flight;
+	Search_Flight(One_Ser, Temp_Flight);
+	Print_Flight_To_Termimal(Temp_Flight);
+}
+
+
+void AirTicSystem::Print_Flight_All_In_Sys_To_Terminal()
+{
+	for (auto M_Iter = Ser_Flight_Map.begin();
+		M_Iter != Ser_Flight_Map.end(); M_Iter++) {
+		Print_Flight_To_Termimal_In_Ser((M_Iter->first));
+	}
 	return;
 }
 
@@ -552,11 +565,26 @@ void AirTicSystem::Search_Transit(Serials_Vec_Type T_Sers, Serials_Vec_Type L_Se
 }
 
 
+void AirTicSystem::Rank_Ser_Map_Price(const multimap<Serial_Type, Serial_Type>& Sers_Map, multimap<float, pair<Serial_Type, Serial_Type> >& Sers_Map_In_Price) {
+	for (auto S_Iter = Sers_Map.begin();
+		S_Iter != Sers_Map.end(); S_Iter++) {
+		Flight Fir, Sec;
+		Search_Flight(S_Iter->first, Fir);
+		Search_Flight(S_Iter->second,Sec);
+		float total = Fir.Tic_Price + Sec.Tic_Price;
+		Sers_Map_In_Price.insert({ total,{S_Iter->first,S_Iter->second} });
+
+	}
+	return;
+
+}
+
+
 Serials_Vec_Type AirTicSystem::Book_The_Flight() {
 	string T_City, L_City;
 	cin >> T_City >> L_City;
-
-
+	Serials_Vec_Type booked;
+	return booked;
 }
 
 

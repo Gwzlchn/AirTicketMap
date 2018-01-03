@@ -24,8 +24,9 @@ int main() {
 	
 	multimap<Serial_Type, Serial_Type> Test_Transit;
 	test.Search_Transit("BAV", "CTU", Test_Transit);
-	
-
+	multimap<float, pair<Serial_Type, Serial_Type> > Sers_Map;
+	test.Rank_Ser_Map_Price(Test_Transit, Sers_Map);
+	test.Print_Flight_All_In_Sys_To_Terminal();
 
 	/*Flight Ans_Flight;
 	Ans_Flight = Create_New_Flight();

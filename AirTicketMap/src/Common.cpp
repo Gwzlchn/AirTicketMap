@@ -78,7 +78,7 @@ long Char_Date_To_Long(char C_Date[])
 	int mm = stoi(D_Vec[1]);
 	int dd = stoi(D_Vec[2]);
 
-	return year * 10000 + mm  * 100 + dd;
+	return year * 10000 + mm * 100 + dd;
 
 }
 

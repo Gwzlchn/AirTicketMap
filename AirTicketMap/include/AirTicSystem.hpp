@@ -104,6 +104,10 @@ public:
 	int Search_Flight_In_Gragh(char V_City[], char E_City[], Serials_Vec_Type& Ser_Vec, int Vec_Choose);
 
 	void Search_Transit(char T_City[], char L_City[], multimap<Serial_Type, Serial_Type>& Sers_Map);
+
+	void Search_Transit(Serials_Vec_Type T_Sers, Serials_Vec_Type L_Sers, multimap<Serial_Type, Serial_Type>& Sers_Map);
+
+	Serials_Vec_Type Book_The_Flight();
 	
 
 

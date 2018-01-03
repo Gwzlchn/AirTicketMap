@@ -38,8 +38,8 @@ struct Flight							//航班信息
 
 	char Aircraft_Type[SHSIZE];			//机型			14
 
-	
-	
+
+
 	float M_Discount;    				//最大折扣		15
 	float Tic_Price;					//机票单价		16
 

@@ -51,7 +51,7 @@ struct Flight							//航班信息
 
 Flight Create_New_Flight(vector<string> Line_Data);
 Flight Create_New_Flight();
-
+string Merge_Flight_To_One_Str(Flight& One_Filght);
 
 
 

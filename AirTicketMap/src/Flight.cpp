@@ -4,7 +4,7 @@
 using std::cin;
 using std::endl;
 using std::cout;
-
+using std::to_string;
 
 Flight Create_New_Flight(vector<string> Line_Data) {
 	Flight New_Flight;
@@ -83,6 +83,52 @@ Flight Create_New_Flight()
 
 	Flight NN = Create_New_Flight(Line_Vec);
 	return NN;
+}
+
+string Merge_Flight_To_One_Str(Flight & One_Filght)
+{
+	
+	string temp = One_Filght.T_City;
+	temp += ",";
+	temp += One_Filght.T_City_Short;
+	temp += ",";
+	temp += One_Filght.L_City;
+	temp += ",";
+	temp += One_Filght.L_City_Short;
+	temp += ",";
+	temp += One_Filght.Flight_CO;
+	temp += ",";
+	temp += One_Filght.Flight_ID;
+	temp += ",";
+	temp += One_Filght.T_Airport;
+	temp += ",";
+	temp += One_Filght.L_Airport;
+	temp += ",";
+	temp += One_Filght.T_Date;
+	temp += ",";
+	temp += One_Filght.T_Time;
+	temp += ",";
+	temp += One_Filght.T_Time_Stamp;
+	temp += ",";
+	temp += One_Filght.L_Date;
+	temp += ",";
+	temp += One_Filght.L_Time;
+	temp += ",";
+	temp += One_Filght.L_Time_Stamp;
+	temp += ",";
+	temp += One_Filght.Aircraft_Type;
+	temp += ",";
+	temp += to_string(One_Filght.M_Discount);
+	temp += ",";
+	temp += to_string(One_Filght.Tic_Price);
+	temp += ",";
+	temp += to_string(One_Filght.Max_Seats);
+	temp += ",";
+	temp += to_string(One_Filght.Cur_Order);
+
+	
+	
+	return temp;
 }
 
 

@@ -71,6 +71,8 @@ public:
 	void Print_Flight_All_In_Sys_To_Terminal();
 	void Print_Flight_Serials_Vec_To_Terminal(Serials_Vec_Type& Serials_Vec);
 
+	void Store_All_Data_To_File(const char * Store_Name);
+
 	//插入到边链表 正图+反图
 	bool Insert_Flight_To_Pos_OR_Neg_Graph(Vertex_City* V_City, Edge_City* E_City, const vector<string>& New_Ser_Vec,int Vec_Choose);
 	bool Insert_Flight_To_Pos_OR_Neg_Graph(Vertex_City* V_City, Edge_City* E_City, const string New_Ser_Str, int Vec_Choose);

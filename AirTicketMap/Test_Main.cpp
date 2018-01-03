@@ -7,10 +7,10 @@
 
 //const char* Flight_File_Name = "..\\RawData\\AirlineDataTEST_GBK.csv";
 const char* Flight_File_Name = "..\\RawData\\test_transit.csv";
-using namespace std;
 const char * Admin_File = "..\\RawData\\admin.csv";
 const char * Cus_File = "..\\RawData\\Customer.csv";
-
+const char* Save_File_Name = "..\\RawData\\test_save.csv";
+using namespace std;
 
 int main() {
 
@@ -27,7 +27,7 @@ int main() {
 	multimap<float, pair<Serial_Type, Serial_Type> > Sers_Map;
 	test.Rank_Ser_Map_Price(Test_Transit, Sers_Map);
 	test.Print_Flight_All_In_Sys_To_Terminal();
-
+	test.Store_All_Data_To_File(Save_File_Name);
 	/*Flight Ans_Flight;
 	Ans_Flight = Create_New_Flight();
 

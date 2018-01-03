@@ -210,6 +210,27 @@ void AirTicSystem::Print_Flight_Serials_Vec_To_Terminal(Serials_Vec_Type& Serial
 }
 
 
+
+void AirTicSystem::Store_All_Data_To_File(const char * Store_Name) {
+	ofstream SaveFile(Store_Name);
+	if (!SaveFile) {
+		cerr << "打开文件失败" << endl;
+		system("pause");
+	}
+	SaveFile << "起始城市,起始城市缩写,到达城市,到达城市缩写,"
+		"公司,航班号,起飞机场,到达机场,起飞日期,起飞时间,"
+		"起飞时间戳,到达日期,到达时间,到达时间戳,机型,"
+		"价格,最大折扣,满载,当前人数" << endl;
+	for (auto M_Iter = Ser_Flight_Map.begin();
+		M_Iter != Ser_Flight_Map.end(); M_Iter++) {
+		string One_Line = Merge_Flight_To_One_Str(M_Iter->second);
+		SaveFile << One_Line << endl;
+	}
+}
+
+
+
+
 //Vec_choose == 1 找正图 ==2 找反图
 bool AirTicSystem::Insert_Flight_To_Pos_OR_Neg_Graph(Vertex_City* V_City, Edge_City* E_City, const vector<string>& New_Ser_Vec, int Vec_Choose) {
 
@@ -578,6 +599,10 @@ void AirTicSystem::Rank_Ser_Map_Price(const multimap<Serial_Type, Serial_Type>& 
 	return;
 
 }
+
+
+
+
 
 
 Serials_Vec_Type AirTicSystem::Book_The_Flight() {

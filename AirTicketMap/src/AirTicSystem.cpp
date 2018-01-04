@@ -117,11 +117,12 @@ int AirTicSystem::Search_Flight(Serial_Type Flight_Seq, Flight & Ans_Flight)
 	}
 }
 
-int AirTicSystem::Search_Flight_ByID(string Flight_ID, Serials_Vec_Type& Serials_Vec)
+int AirTicSystem::Search_Flight_ByID(string Flight_ID, Serials_Vec_Type& Serials_Vec)//*
 {
 	Serials_Vec.clear();
 	auto Sers_Entries = FlightID_Ser_Map.count(Flight_ID);
 	size_t Sers_Cnt = Sers_Entries;
+
 	auto S_Iter = FlightID_Ser_Map.find(Flight_ID);
 	if (S_Iter == FlightID_Ser_Map.end()) {
 		cout << "无此航班号" << endl;
@@ -247,7 +248,9 @@ bool AirTicSystem::Insert_Flight_To_Pos_OR_Neg_Graph(Vertex_City* V_City, Edge_C
 
 
 	if (Vec_Choose == 1 || Vec_Choose == 2) {
-		vector<Vertex_City>& V_City_Vec = (Vec_Choose == 1) ? Pos_T_City_Vec : Neg_L_City_Vec;
+		int Graph_Choose = (Vec_Choose == 1) ? 1 : 0;
+		vector<Vertex_City>& V_City_Vec = (Vec_Choose == 1) ? Pos_T_City_Vec : Neg_L_City_Vec;//*
+
 
 		int V_Index = Index_OF_Pos_OR_Neg_City_Vec(V_City, Vec_Choose);
 
@@ -259,9 +262,10 @@ bool AirTicSystem::Insert_Flight_To_Pos_OR_Neg_Graph(Vertex_City* V_City, Edge_C
 			Vertex_City Temp_V_Cy = V_City_Vec[V_Index];
 			Edge_City* E_Cy_Ptr = Temp_V_Cy.Edge_City_Head;
 
+
 			int E_Flag = 1;
 			for (; E_Cy_Ptr != NULL; E_Cy_Ptr = E_Cy_Ptr->Next_Edge_City) {
-				E_Flag = strcmp(E_Cy_Ptr->Edge_City_Short, New_Ser_Vec[1].c_str());
+				E_Flag = strcmp(E_Cy_Ptr->Edge_City_Short, New_Ser_Vec[Graph_Choose].c_str());
 				if (E_Flag == 0) break;
 			}
 
@@ -278,7 +282,7 @@ bool AirTicSystem::Insert_Flight_To_Pos_OR_Neg_Graph(Vertex_City* V_City, Edge_C
 			}
 
 		}
-		//T_Index！=0说明一个新出发城市顶点
+		//T_Index<0说明一个新出发城市顶点
 		else {
 			V_City->Edge_City_Head = E_City;
 			V_City_Vec.push_back((*V_City));
@@ -683,12 +687,17 @@ Serials_Vec_Type AirTicSystem::Search_Flight_In_Condition() {
 			Serials_Vec_Type T_Date_Vec, L_Date_Vec;
 			cout << "输入起飞日期（按照yyyy/mm/dd）" << endl;
 			cin >> T_Date;
+			while (true)
+			{
+
+			}
 			cout << "输入最晚降落日期，（按照yyyy/mm/dd）" << endl;
 			cin >> L_Date;
 
 
 			Fliter_Ser_Vec_By_Date(T_Date.c_str(), L_Date.c_str(), T_All_Vec, T_Date_Vec);
 			Fliter_Ser_Vec_By_Date(T_Date.c_str(), L_Date.c_str(), L_All_Vec, L_Date_Vec);
+
 			Print_Flight_Serials_Vec_To_Terminal(T_Date_Vec);
 			Print_Flight_Serials_Vec_To_Terminal(L_Date_Vec);
 			multimap<Serial_Type, Serial_Type> transit_map;
@@ -743,6 +752,7 @@ Serials_Vec_Type AirTicSystem::Search_Flight_In_Condition() {
 		
 			
 	}
+	//*
 	Serials_Vec_Type To_Return;
 	insert_iterator<Serials_Vec_Type> V_init(To_Return, To_Return.begin());
 	copy(Sers_Set.begin(), Sers_Set.end(), V_init);
@@ -755,8 +765,10 @@ Serials_Vec_Type AirTicSystem::Search_Flight_In_Condition() {
 void AirTicSystem::Book_Flight_Tics(const Serials_Vec_Type& To_Book_Vec, const Serials_Vec_Type& Haved_Vec, Serials_Vec_Type& Booked_Vec) {
 	Booked_Vec.clear();
 	Serials_Vec_Type Real_To_Book = To_Book_Vec;
+	//*
 	auto read_iter = set_difference(To_Book_Vec.begin(), To_Book_Vec.end(), Haved_Vec.begin(), Haved_Vec.end(), Real_To_Book.begin());
 	Real_To_Book.resize(read_iter - Real_To_Book.begin());
+
 	for (auto V_Iter = Real_To_Book.begin();
 		V_Iter != Real_To_Book.end(); V_Iter++) {
 		auto M_Iter = Ser_Flight_Map.find(*V_Iter);

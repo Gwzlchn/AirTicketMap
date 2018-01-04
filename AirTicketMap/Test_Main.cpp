@@ -14,8 +14,10 @@ using namespace std;
 
 int main() {
 
-
-	
+	/*char time[20] = "2012/12/12";
+	int i = check_time_fomart(time);
+	char w[20] = "2012-02";
+	int j = check_time_fomart(w);*/
 
 	AirTicSystem test(Flight_File_Name);
 	
@@ -57,9 +59,9 @@ int main() {
 
 	Admin_System A_And_C(Admin_File, Cus_File,Flight_File_Name);
 	
-	char time[6] = "15:60";
+	/*char time[6] = "15:60";
 	int t = Char_Time_To_Int(time);
-	cout << t;
+	cout << t;*/
 
 	char date[11] = "2017/01/05";
 	long d = Char_Date_To_Long(date);

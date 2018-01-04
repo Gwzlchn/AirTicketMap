@@ -17,7 +17,11 @@ void Split_Row(string str,  string separator, vector<string> &result);
 
 int Char_Time_To_Int(char C_Time[6]);
 
-long Char_Date_To_Long(char C_Date[11]);
+int is_number(char c);
+
+int check_time_fomart(char time[]);
+
+long Char_Date_To_Long(char C_Date[]);
 
 
 

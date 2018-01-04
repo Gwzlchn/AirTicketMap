@@ -132,7 +132,6 @@
     <ClInclude Include="include\Users.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Login_NC.c" />
     <ClCompile Include="src\AirTicSystem.cpp" />
     <ClCompile Include="src\Common.cpp" />
     <ClCompile Include="src\Flight.cpp" />

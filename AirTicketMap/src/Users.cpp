@@ -173,6 +173,7 @@ void Admin_System::Admin_Manage(AirTicSystem & Air_Tic_Data)
 	}
 	if (A_Choose == 0) {
 		cout << "退出管理员通道~" << endl;
+		Air_Tic_Data.Store_All_Data_To_File("Map.csv");
 		return;
 	}
 }
@@ -283,7 +284,8 @@ void Admin_System::Customers_Manage(const string Customer_Name,AirTicSystem & Ai
 			cout << "欢迎使用购票系统" << endl;
 			To_Book = Air_Tic_Data.Search_Flight_In_Condition();
 			Air_Tic_Data.Book_Flight_Tics(To_Book, One_Cus_Ser_Vec ,Booked);
-			One_Cus_Ser_Vec.insert(One_Cus_Ser_Vec.end(), Booked.begin(), Booked.end());
+			if(Booked.size()!=0)
+				One_Cus_Ser_Vec.insert(One_Cus_Ser_Vec.end(), Booked.begin(), Booked.end());
 			Store_Cus_Data("storeusers.csv");
 			break;
 		case 4:
@@ -301,6 +303,7 @@ void Admin_System::Customers_Manage(const string Customer_Name,AirTicSystem & Ai
 		}
 	}
 	if (C_Choose == 0) {
+		Air_Tic_Data.Store_All_Data_To_File("Map.csv");
 		cout << "退出用户通道~" << endl;
 		return;
 	}

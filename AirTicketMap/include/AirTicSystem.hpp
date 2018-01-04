@@ -64,8 +64,7 @@ public:
 	void Create_Map_From_CSV(const char* File_Name);
 	void Create_Pos_Neg_From_Map();
 
-	void Print_ALL_To_Terminal();
-	void Print_ALL_To_File(const char* File_Name);
+	
 
 	void Print_Flight_To_Termimal(Flight& One_Flight);
 	void Print_Flight_To_Termimal_In_Ser(Serial_Type One_Ser);

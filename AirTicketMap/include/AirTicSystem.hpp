@@ -6,12 +6,13 @@
 #include<map>
 #include<unordered_map>
 #include<utility>
-
+#include<set>
+#include <iterator>
 
 using	std::multimap;
 using	std::map;
 using   std::pair;
-
+using   std::set;
 
 
 
@@ -55,6 +56,7 @@ private:
 	//映射结构
 	map<Serial_Type, Flight>				Ser_Flight_Map;		//流水号到航班信息的映射
 	multimap<string ,Serial_Type>		FlightID_Ser_Map;	//航班号到流水号的映射
+	map<string, string>                 City_Short_Map;
 public:
 	//构造，读写文件，输出函数
 	AirTicSystem(const char* File_Name);
@@ -91,8 +93,8 @@ public:
 	void Fliter_Ser_Vec_By_T_Date_Time(char T_Date[], char T_Time[], const Serials_Vec_Type& Raw_Vec, Serials_Vec_Type& Date_Vec);
 	void Fliter_Ser_Vec_By_T_Date_Time(long T_Date, int T_Time, const Serials_Vec_Type & Raw_Vec, Serials_Vec_Type & Date_Vec);
 
-
-	void Fliter_Ser_Vec_By_Date(char T_Date[], char L_Date[], const Serials_Vec_Type & Raw_Vec, Serials_Vec_Type & Date_Vec);
+	void Fliter_Ser_Vec_By_Date(const char T_Date[], const char L_Date[], const Serials_Vec_Type & Raw_Vec, Serials_Vec_Type & Date_Vec);
+	void Fliter_Ser_Vec_By_Date(char T_Date[], char L_Date[] , const Serials_Vec_Type & Raw_Vec, Serials_Vec_Type & Date_Vec);
 	void Fliter_Ser_Vec_By_Date(long T_Date, long L_Date, const Serials_Vec_Type & Raw_Vec, Serials_Vec_Type & Date_Vec);
 
 
@@ -102,8 +104,9 @@ public:
 	void Rank_Ser_Vec_Price(const Serials_Vec_Type & Raw_Vec, Serials_Vec_Type & Rank_Vec);
 
 
-
+	int Search_Flight_V_City_All(const char V_City[], Serials_Vec_Type & Ser_Vec, int Vec_Choose);
 	int Search_Flight_V_City_All(char V_City[], Serials_Vec_Type & Ser_Vec, int Vec_Choose);
+	int AirTicSystem::Search_Flight_In_Gragh(const char V_City[], const char E_City[], Serials_Vec_Type& Ser_Vec, int Vec_Choose);
 
 	int Search_Flight_In_Gragh(char V_City[], char E_City[], Serials_Vec_Type& Ser_Vec, int Vec_Choose);
 
@@ -113,7 +116,18 @@ public:
 
 	void Rank_Ser_Map_Price(const multimap<Serial_Type, Serial_Type>& Sers_Map, multimap<float, pair<Serial_Type, Serial_Type>>& Sers_Map_In_Price);
 
+	bool Is_In_City_Map(string City_Short);
+
+	Serials_Vec_Type Search_Flight_In_Condition();
+
+	void Book_Flight_Tics(const Serials_Vec_Type& To_Book_Vec,Serials_Vec_Type& Booked_Vec);
+
+
 	Serials_Vec_Type Book_The_Flight();
+
+	Serials_Vec_Type Choose_Tics_To_Cancel(const Serials_Vec_Type & All_In_Cus);
+
+	void Cancel_Flight_Tics(const Serials_Vec_Type& To_Cancel_Vec,Serials_Vec_Type& Canceled_Vec);
 	
 
 
@@ -144,6 +158,4 @@ public:
 
 
 #endif // !AIRTICSYSTEM_HPP
-
-
 

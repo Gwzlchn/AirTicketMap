@@ -41,17 +41,33 @@ public:
 
 	bool Is_Customer(string C_Name);
 
+	void Admin_Identity(AirTicSystem & Air_Tic_Data);
+
+	
+
 	void Admin_Manage(AirTicSystem& Air_Tic_Data);
 	int Admin_Choose_Func();
 
 	static int Check_Admin_Choose(int Choice);
 
-	void Users_Manage(const AirTicSystem & Air_Tic_Data);
+	
 
 
-	int Users_Choose_Func();
+	//int Users_Choose_Func();
 
-	 int Check_Choose_All_Num();
+	//static int Check_Users_Choose(int Choice);
+
+	void Customers_Manage(AirTicSystem & Air_Tic_Data);
+
+	void Customer_Identity(AirTicSystem & Air_Tic_Data);
+
+	void Customers_Manage(const string Customer_Name, AirTicSystem & Air_Tic_Data);
+
+	int Customers_Choose_Func();
+
+	static int Check_Customers_Choose(int Choice);
+
+	int Check_Choose_All_Num();
 
 	static int Check_A_OR_C_Choose(int Choice);
 

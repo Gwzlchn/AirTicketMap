@@ -58,7 +58,13 @@ Flight Create_New_Flight()
 	vector<string> Line_Vec, T_Date_Vec,L_Date_Vec, Time_Vec;
 	string sep = ",";
 	Split_Row(Line, sep, Line_Vec);
+	while (Line_Vec.size() != 17) {
+		cout << "输入数据有误" << endl
+			<< "重新输入航班数据" << endl;
+		cin >> Line;
+		Split_Row(Line, sep, Line_Vec);
 
+	}
 
 	//日期
 	string T_Date,L_Date;

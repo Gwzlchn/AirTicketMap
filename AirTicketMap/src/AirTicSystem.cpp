@@ -10,10 +10,6 @@ using namespace std;
 
 
 
-
-
-
-
 AirTicSystem::AirTicSystem(const char * File_Name)
 {
 	Flight_From_One_Count = 0;
@@ -63,6 +59,9 @@ void AirTicSystem::Create_Map_From_CSV(const char * File_Name)
 			Ser_Flight_Map.insert({ New_Flight.Serial_NO ,New_Flight });
 			//航班号 序列号的映射
 			FlightID_Ser_Map.insert({ New_Flight.Flight_ID,New_Flight.Serial_NO });
+
+			City_Short_Map.insert({ New_Flight.L_City_Short,New_Flight.L_City });
+			City_Short_Map.insert({ New_Flight.T_City_Short,New_Flight.T_City });
 		}
 	}
 
@@ -119,8 +118,9 @@ int AirTicSystem::Search_Flight(Serial_Type Flight_Seq, Flight & Ans_Flight)
 
 int AirTicSystem::Search_Flight_ByID(string Flight_ID, Serials_Vec_Type& Serials_Vec)
 {
+	Serials_Vec.clear();
 	auto Sers_Entries = FlightID_Ser_Map.count(Flight_ID);
-	int Sers_Cnt = Sers_Entries;
+	size_t Sers_Cnt = Sers_Entries;
 	auto S_Iter = FlightID_Ser_Map.find(Flight_ID);
 	while (Sers_Entries) {
 		Serials_Vec.push_back(S_Iter->second);
@@ -204,7 +204,13 @@ void AirTicSystem::Print_Flight_Serials_Vec_To_Terminal(Serials_Vec_Type& Serial
 	for (auto S_Iter = Serials_Vec.begin();
 		S_Iter != Serials_Vec.end(); S_Iter++) {
 		auto F_Iter = Ser_Flight_Map.find((*S_Iter));
-		Print_Flight_To_Termimal((*F_Iter).second);
+		if (F_Iter == Ser_Flight_Map.end()) {
+			cout << "未找到该航班  ";
+			cout << (*S_Iter) << endl;
+			continue;
+		}
+		else
+			Print_Flight_To_Termimal((*F_Iter).second);
 	}
 	return;
 }
@@ -250,7 +256,7 @@ bool AirTicSystem::Insert_Flight_To_Pos_OR_Neg_Graph(Vertex_City* V_City, Edge_C
 
 			int E_Flag = 1;
 			for (; E_Cy_Ptr != NULL; E_Cy_Ptr = E_Cy_Ptr->Next_Edge_City) {
-				E_Flag = strcmp(E_City->Edge_City_Short, New_Ser_Vec[1].c_str());
+				E_Flag = strcmp(E_Cy_Ptr->Edge_City_Short, New_Ser_Vec[1].c_str());
 				if (E_Flag == 0) break;
 			}
 
@@ -328,6 +334,7 @@ bool AirTicSystem::Insert_Flight_To_All(Flight& New_Flight)
 		Insert_Flight_To_Pos_OR_Neg_Graph(New_Flight);
 		Ser_Flight_Map.insert({ New_Flight.Serial_NO,New_Flight });
 		FlightID_Ser_Map.insert({ New_Flight.Flight_ID,New_Flight.Serial_NO });
+		return true;
 	}
 
 	//已存在相同航班
@@ -391,6 +398,12 @@ void AirTicSystem::Fliter_Ser_Vec_By_T_Date_Time(long T_Date, int T_Time, const 
 }
 
 
+void AirTicSystem::Fliter_Ser_Vec_By_Date(const char T_Date[], const char L_Date[],  const Serials_Vec_Type& Raw_Vec, Serials_Vec_Type& Date_Vec) {
+	Fliter_Ser_Vec_By_Date(const_cast<char*>(T_Date), const_cast<char*>(L_Date), Raw_Vec, Date_Vec);
+	return;
+}
+
+
 //两个正常字符串日期作为过滤器，过滤流水号，详细见下面用long的
 void AirTicSystem::Fliter_Ser_Vec_By_Date(char T_Date[], char L_Date[], const Serials_Vec_Type& Raw_Vec, Serials_Vec_Type& Date_Vec) {
 	long T_Long = Char_Date_To_Long(T_Date);
@@ -420,8 +433,6 @@ void AirTicSystem::Fliter_Ser_Vec_By_Date(long T_Date, long L_Date, const Serial
 	}
 	return;
 }
-
-
 //将流水号 按起飞时间从小到大排序
 void AirTicSystem::Rank_Ser_Vec_T_Time(const Serials_Vec_Type& Raw_Vec, Serials_Vec_Type& Rank_Vec) {
 	multimap<unsigned long long, Serial_Type>  T_Time_Ser_Map;
@@ -442,8 +453,6 @@ void AirTicSystem::Rank_Ser_Vec_T_Time(const Serials_Vec_Type& Raw_Vec, Serials_
 
 
 }
-
-
 //将流水号 按价格从低到高排序
 void AirTicSystem::Rank_Ser_Vec_Price(const Serials_Vec_Type& Raw_Vec, Serials_Vec_Type& Rank_Vec) {
 	if (Raw_Vec.size() != 0) {
@@ -467,6 +476,10 @@ void AirTicSystem::Rank_Ser_Vec_Price(const Serials_Vec_Type& Raw_Vec, Serials_V
 }
 
 
+
+int AirTicSystem::Search_Flight_V_City_All(const char V_City[], Serials_Vec_Type& Ser_Vec, int Vec_Choose) {
+	return Search_Flight_V_City_All(const_cast<char*>(V_City), Ser_Vec, Vec_Choose);
+}
 
 
 
@@ -506,8 +519,9 @@ int AirTicSystem::Search_Flight_V_City_All(char V_City[], Serials_Vec_Type& Ser_
 
 
 
-
-
+int AirTicSystem::Search_Flight_In_Gragh(const char V_City[],const char E_City[], Serials_Vec_Type& Ser_Vec, int Vec_Choose) {
+	return Search_Flight_In_Gragh(const_cast<char*>(V_City), const_cast<char*>(E_City), Ser_Vec, Vec_Choose);
+}
 
 //这个函数是搜索直达的
 //返回-3 选择不对
@@ -516,6 +530,7 @@ int AirTicSystem::Search_Flight_V_City_All(char V_City[], Serials_Vec_Type& Ser_
 //返回 1 无边城市
 int AirTicSystem::Search_Flight_In_Gragh(char V_City[], char E_City[], Serials_Vec_Type& Ser_Vec, int Vec_Choose) {
 	if (Vec_Choose == 1 || Vec_Choose == 2) {
+		Ser_Vec.clear();
 		vector<Vertex_City>& V_City_Vec = (Vec_Choose == 1) ? Pos_T_City_Vec : Neg_L_City_Vec;
 
 		int V_Index = Index_OF_Pos_OR_Neg_City_Vec(V_City, Vec_Choose);
@@ -600,20 +615,219 @@ void AirTicSystem::Rank_Ser_Map_Price(const multimap<Serial_Type, Serial_Type>& 
 
 }
 
+bool AirTicSystem::Is_In_City_Map(string City_Short) {
+	auto iter = City_Short_Map.find(City_Short);
+	if (iter == City_Short_Map.end())
+		return false;
+	return true;
+}
+
+Serials_Vec_Type AirTicSystem::Search_Flight_In_Condition() {
+	Serials_Vec_Type Sers_All_Vec, T_All_Vec, L_All_Vec;
+	set<Serial_Type> Sers_Set;
+	while (1)
+	{
+		string T_City, L_City;
+		cout << "输入起飞城市三字代码  ";
+		cin >> T_City;
+		while (!Is_In_City_Map(T_City))
+		{
+			cout << "输入城市有误" << endl;
+			cin >> T_City;
+		}
+
+		cout << "输入到达城市三字代码  ";
+		cin >> L_City;
+		while (!Is_In_City_Map(L_City))
+		{
+			cout << "输入城市有误" << endl;
+			cin >> L_City;
+		}
 
 
+		Serials_Vec_Type Sers_All_Vec, T_All_Vec, L_All_Vec;
+		
+		Search_Flight_V_City_All(T_City.c_str(), T_All_Vec, 1);
+		Search_Flight_V_City_All(L_City.c_str(), L_All_Vec, 2);
+		int cor = Search_Flight_In_Gragh(T_City.c_str(), L_City.c_str(), Sers_All_Vec, 1);
+		if (Sers_All_Vec.size() != 0) {
+			cout << "二者之间的直达航班有：" << endl;
+			Print_Flight_Serials_Vec_To_Terminal(Sers_All_Vec);
+			cout << "按价格排序后有： " << endl;
+			Serials_Vec_Type Ser_Price;
+			Rank_Ser_Vec_Price(Sers_All_Vec, Ser_Price);
+			Print_Flight_Serials_Vec_To_Terminal(Ser_Price);
+			int i; 
+			cout << "您要购买第几张？ 1 -- "<<Ser_Price.size() << endl;
+			cin >> i;
+			for (; i > 0; cin >> i) {
+				if (i > Ser_Price.size()) {
+					cout << "超过范围,重新输入" << endl;
+				}
+				else {
+					Sers_Set.insert(Ser_Price[i - 1]);
+					cout << "还想购买第i张，输入0退出";
+				}
+			}
+			break;
+		}
+		else {
+			cout << "二者之间没有直达航班" << endl;
+
+			string T_Date, L_Date;
+			Serials_Vec_Type T_Date_Vec, L_Date_Vec;
+			cout << "输入起飞日期（按照yyyy/mm/dd）" << endl;
+			cin >> T_Date;
+			cout << "输入最晚降落日期，（按照yyyy/mm/dd）" << endl;
+			cin >> L_Date;
 
 
+			Fliter_Ser_Vec_By_Date(T_Date.c_str(), L_Date.c_str(), T_All_Vec, T_Date_Vec);
+			Fliter_Ser_Vec_By_Date(T_Date.c_str(), L_Date.c_str(), L_All_Vec, L_Date_Vec);
+			Print_Flight_Serials_Vec_To_Terminal(T_Date_Vec);
+			Print_Flight_Serials_Vec_To_Terminal(L_Date_Vec);
+			multimap<Serial_Type, Serial_Type> transit_map;
+			Search_Transit(T_Date_Vec, L_Date_Vec, transit_map);
+			multimap<float, pair<Serial_Type, Serial_Type> > trans_map_in_price;
+			Rank_Ser_Map_Price(transit_map, trans_map_in_price);
 
-Serials_Vec_Type AirTicSystem::Book_The_Flight() {
-	string T_City, L_City;
-	cin >> T_City >> L_City;
-	Serials_Vec_Type booked;
-	return booked;
+
+			multimap<int, pair<Serial_Type, Serial_Type> > trans_map_in_price_temp;
+			int index = 1;
+			if (trans_map_in_price.size() != 0) {
+				cout << "总价格\t\t第一个航班流水号为\t\t 第二个航班流水号为" << endl;
+				for (auto iter = trans_map_in_price.begin();
+					iter != trans_map_in_price.end(); iter++) {
+					cout << iter->first << "    ";
+					Print_Flight_To_Termimal_In_Ser(iter->second.first);
+					cout << "\t";
+					Print_Flight_To_Termimal_In_Ser(iter->second.second);
+					cout << endl;
+					trans_map_in_price_temp.insert({ index,iter->second });
+					index++;
+				}
+
+				int i;
+				cout << "你想要购买哪两个中转航班 1 -- " << transit_map.size() << endl;
+				cin >> i;
+				for (; i > 0; cin >> i) {
+					if (i > transit_map.size()) {
+						cout << "超过范围，重新输入" << endl;
+					}
+					else {
+						auto Pair_Iter = trans_map_in_price_temp.find(i);
+						if (Pair_Iter == trans_map_in_price_temp.end())
+							continue;
+						else {
+							pair<Serial_Type,Serial_Type> Pair_Vec;
+							Pair_Vec = Pair_Iter->second;
+							Sers_Set.insert(Pair_Vec.first);
+							Sers_Set.insert(Pair_Vec.second);
+							cout << "还想购买 输入i，否则输入0退出" << endl;
+						}
+					}
+				}
+				break;
+			}
+			else {
+				cout << "这两城市之间无法中转到达" << endl;
+			}
+		}
+			
+		
+			
+	}
+	Serials_Vec_Type To_Return;
+	insert_iterator<Serials_Vec_Type> V_init(To_Return, To_Return.begin());
+	copy(Sers_Set.begin(), Sers_Set.end(), V_init);
+	return To_Return;
 }
 
 
 
+void AirTicSystem::Book_Flight_Tics(const Serials_Vec_Type& To_Book_Vec,Serials_Vec_Type& Booked_Vec) {
+
+	for (auto V_Iter = To_Book_Vec.begin();
+		V_Iter != To_Book_Vec.end(); V_Iter++) {
+		auto M_Iter = Ser_Flight_Map.find(*V_Iter);
+		if (M_Iter == Ser_Flight_Map.end()) {
+			cout << "未找到该航班  ";
+			cout << (*V_Iter) << endl;
+			continue;
+		}
+		else
+		{
+			if (M_Iter->second.Cur_Order >= M_Iter->second.Max_Seats){
+				cout << "已满员" << endl;
+				continue;
+			}
+			else {
+				M_Iter->second.Cur_Order++;
+				cout << "订票成功" << endl;
+				Booked_Vec.push_back(M_Iter->first);
+
+			}
+		}
+	}
+
+}
+
+
+
+
+
+Serials_Vec_Type AirTicSystem::Choose_Tics_To_Cancel(const Serials_Vec_Type& All_In_Cus) {
+	if (All_In_Cus.size() != 0) {
+		cout << "您一共购买了 " << All_In_Cus.size() << " 张票" << endl;
+		int i = 1;
+		for (auto V_Iter = All_In_Cus.begin();
+			V_Iter != All_In_Cus.end(); V_Iter++) {
+			cout << " 第 " << i << " 张 ";
+			Print_Flight_To_Termimal_In_Ser(*V_Iter);
+			i++;
+		}
+		Serials_Vec_Type To_Cancel_Vec;
+		set<Serial_Type> To_Cancel_Set;
+		cout << "输入想退票的标号(0是不需要退票，直接退出)" << endl;
+		int choice ;
+		cin >> choice;
+		while (choice!=0)
+		{
+			To_Cancel_Set.insert(All_In_Cus[choice]);
+			cout << "将继续输入(0是退出)" << endl;
+			cin >> choice;
+		}
+		insert_iterator<Serials_Vec_Type> V_init(To_Cancel_Vec, To_Cancel_Vec.begin());
+		copy(To_Cancel_Set.begin(), To_Cancel_Set.end(), V_init);
+
+
+
+		return To_Cancel_Vec;
+	}
+
+}
+
+
+void AirTicSystem::Cancel_Flight_Tics(const Serials_Vec_Type& To_Cancel_Vec, Serials_Vec_Type& Canceled_Vec){
+
+	for (auto V_Iter = To_Cancel_Vec.begin();
+		V_Iter != To_Cancel_Vec.end(); V_Iter++) {
+		auto M_Iter = Ser_Flight_Map.find(*V_Iter);
+		if (M_Iter == Ser_Flight_Map.end()) {
+			cout << "未找到该航班  ";
+			cout << (*V_Iter) << endl;
+			continue;
+		}
+		else
+		{
+			M_Iter->second.Cur_Order--;
+			cout << "退票成功" << endl;
+			Canceled_Vec.push_back(M_Iter->first);
+		}
+		
+	}
+
+}
 
 
 

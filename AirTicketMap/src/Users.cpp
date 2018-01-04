@@ -94,54 +94,204 @@ bool Admin_System::Is_Cus_Pwd_Correct(string C_Name, string C_Pwd) {
 bool Admin_System::Is_Admin(string A_Name)
 {
 	auto A_Iter = Admin_Map.find(A_Name);
-	if (A_Iter != Admin_Map.end())
+	if (A_Iter == Admin_Map.end())
 		return false;
-	return true;
+	else
+		return true;
 }
 
 bool Admin_System::Is_Customer(string C_Name)
 {
 	auto A_Iter = Customer_Map.find(C_Name);
-	if (A_Iter != Customer_Map.end())
+	if (A_Iter == Customer_Map.end())
 		return false;
-	return true;
+	else
+		return true;
 }
 
 
 
+void Admin_System::Admin_Identity(AirTicSystem & Air_Tic_Data) {
+	cout << "请输入管理员名" << endl;
+	string A_Name;
+	cin >> A_Name;
+	if (Is_Admin(A_Name)) {
+		cout << "请输入 " << A_Name << " 的密码" << endl;
+		string A_Pwd;
+		cin >> A_Pwd;
+		if (Is_Admin_Pwd_Correct(A_Name, A_Pwd)) {
+			cout << "登陆成功" << endl;
+			Admin_Manage(Air_Tic_Data);
+		}
+		else
+			cout << "密码有误，请重新登陆" << endl;
+	}
+	else
+	{
+		cout << "用户不存在，请重新登陆" << endl;
+	}
+	return;
+}
+
 void Admin_System::Admin_Manage(AirTicSystem & Air_Tic_Data)
 {
-	
-	for (int A_Choose = Admin_Choose_Func();
-		A_Choose != 0; A_Choose = Admin_Choose_Func()) {
+	cout << "选择管理员可用功能" << endl;
+	int A_Choose = Admin_Choose_Func();
+	string ID;
+	Serials_Vec_Type Same_ID;
+	Flight New_Fl;
 
+	for (; A_Choose != 0; A_Choose = Admin_Choose_Func()) {
+		switch (A_Choose)
+		{
+		case 1:
+			Air_Tic_Data.Print_Flight_All_In_Sys_To_Terminal();
+			break;
+		case 2:
+			cout << "请输入欲查询的航班号" << endl;
+			
+			cin >> ID;
+			
+			Air_Tic_Data.Search_Flight_ByID(ID, Same_ID);
+			Air_Tic_Data.Print_Flight_Serials_Vec_To_Terminal(Same_ID);
+			break;
+		case 3:
+			
+			New_Fl = Create_New_Flight();
+			Air_Tic_Data.Insert_Flight_To_All(New_Fl);
+			Air_Tic_Data.Print_Flight_All_In_Sys_To_Terminal();
+			break;
+		}
+
+	}
+	if (A_Choose == 0) {
+		cout << "退出管理员通道~" << endl;
+		return;
 	}
 }
 
 int Admin_System::Admin_Choose_Func()
 {
+	int choice;
 	
-	return 0;
+	cout<< "1. 预览系统中所有航班" << endl
+		<< "2. 按航班号查询所有航班" << endl
+		<< "3. 插入一趟航班" << endl
+		<< "0. 退出管理员通道" << endl;
+	// >> choice;
+	choice = For_All_Check(Check_Admin_Choose);
+	
+	return choice;
 }
 
 int Admin_System::Check_Admin_Choose(int Choice) {
-	return (Choice == 1 || Choice == 2 || Choice == 0) ? 1 : 0;
+	return (Choice == 1 || Choice == 2 || Choice == 0 || Choice==3) ? 1 : 0;
 }
 
 
 
 
 
-void Admin_System::Users_Manage(const AirTicSystem & Air_Tic_Data)
+void Admin_System::Customer_Identity(AirTicSystem & Air_Tic_Data) {
+	cout << "请输入用户名" << endl;
+	string C_Name;
+	cin >> C_Name;
+	if (Is_Customer(C_Name)) {
+		cout << "请输入 " << C_Name << " 的密码" << endl;
+		string C_Pwd;
+		cin >> C_Pwd;
+		if (Is_Cus_Pwd_Correct(C_Name, C_Pwd)) {
+			cout << "登陆成功" << endl;
+			Customers_Manage(C_Name,Air_Tic_Data);
+		}
+		else
+			cout << "密码有误，请重新登陆" << endl;
+	}
+	else {
+		cout << "用户不存在，请重新登陆" << endl;
+	}
+	return;
+}
+
+
+
+void Admin_System::Customers_Manage(const string Customer_Name,AirTicSystem & Air_Tic_Data)
 {
-	string a;
-	cin >> a;
+	//用户个人信息，在map中定位
+	auto C_Iter = Customer_Map.find(Customer_Name);
+	Serials_Vec_Type One_Cus_Ser_Vec = C_Iter->second.Flight_Serials;
+
+	cout << "选择用户可用功能" << endl;
+	int C_Choose = Customers_Choose_Func();
+	string ID;
+	Serials_Vec_Type Same_ID;
+	Flight New_Fl;
+	for (; C_Choose != 0; C_Choose = Customers_Choose_Func()) {
+		switch (C_Choose)
+		{
+		case 1:
+			Air_Tic_Data.Print_Flight_All_In_Sys_To_Terminal();
+			break;
+		case 2:
+			cout << "请输入欲查询的航班号" << endl;
+			cin >> ID;
+			Air_Tic_Data.Search_Flight_ByID(ID, Same_ID);
+			Air_Tic_Data.Print_Flight_Serials_Vec_To_Terminal(Same_ID);
+			break;
+		case 3:
+			string;
+			break;
+		case 4:
+			cout << "您所购买的机票如下所示" << endl;
+			Air_Tic_Data.Print_Flight_Serials_Vec_To_Terminal(One_Cus_Ser_Vec);
+			break;
+		case 6:
+			Serials_Vec_Type cancels = Air_Tic_Data.Choose_Tics_To_Cancel(One_Cus_Ser_Vec);
+			//Air_Tic_Data.Cancel_Flight_Tics(cancels);
+			break;
+
+		
+		}
+	}
+	if (C_Choose == 0) {
+		cout << "退出用户通道~" << endl;
+		return;
+	}
+
 }
 
-int Admin_System::Users_Choose_Func()
+
+
+
+int Admin_System::Customers_Choose_Func()
 {
-	return 0;
+	int choice;
+
+	cout << "1. 预览系统中所有航班" << endl
+		<< "2. 按航班号查询所有航班" << endl
+		<< "3. 按条件查询所有航班" << endl
+		<<" 4. 预览自己所购买的票"<<endl
+		<< "5. 订票" << endl
+		<<"6. 退票"<<endl
+		
+		//<<"5. "
+		<< "0. 退出管理员通道" << endl;
+	
+
+	choice = For_All_Check(Check_Customers_Choose);
+
+	return choice;
 }
+
+int Admin_System::Check_Customers_Choose(int Choice) {
+	return (Choice == 1 || Choice == 2 || Choice == 3|| 
+		Choice == 4 ||Choice==5|| Choice == 6 ||Choice == 0 ) ? 1 : 0;
+}
+
+
+
+
+
 
 
 int Admin_System::Check_Choose_All_Num() {
@@ -195,11 +345,12 @@ void Admin_System::First_Identity(AirTicSystem& Air_Tics)
 		{
 		case 1:
 			cout << "你选择了 1 ，请谨慎修改哦" <<endl;
-			Users_Manage(Air_Tics);
+			Admin_Identity(Air_Tics);
+			//Customers_Manage(Air_Tics);
 			break;
 		case 2:
 			cout << " 你选择了 2 ，祝旅途愉快" <<endl;
-			Admin_Manage(Air_Tics);
+			Customer_Identity(Air_Tics);
 			break;
 
 		}

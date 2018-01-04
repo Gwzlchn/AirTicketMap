@@ -27,9 +27,9 @@ int main() {
 	multimap<float, pair<Serial_Type, Serial_Type> > Sers_Map;
 	test.Rank_Ser_Map_Price(Test_Transit, Sers_Map);
 	test.Print_Flight_All_In_Sys_To_Terminal();
-	test.Store_All_Data_To_File(Save_File_Name);
-	/*Flight Ans_Flight;
-	Ans_Flight = Create_New_Flight();
+	//test.Store_All_Data_To_File(Save_File_Name);
+	Flight Ans_Flight;
+	/*Ans_Flight = Create_New_Flight();
 
 	if(!test.Insert_Flight_To_All(Ans_Flight))
 		cout<<"FAIL"<<endl;*/
@@ -47,9 +47,15 @@ int main() {
 	test.Search_Flight_V_City_All(Test_V_City, Sers, 1);
 
 
+
+	test.Search_Flight_In_Gragh("BJS", "BAV", Sers, 1);
+
+
+
+	test.Search_Flight_In_Condition();
 	
 
-	//Admin_System A_And_C(Admin_File, Cus_File,Flight_File_Name);
+	Admin_System A_And_C(Admin_File, Cus_File,Flight_File_Name);
 	
 	char time[6] = "15:60";
 	int t = Char_Time_To_Int(time);

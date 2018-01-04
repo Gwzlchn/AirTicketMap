@@ -3,7 +3,8 @@
 
 #include<iostream>
 #include<fstream>
-
+#include<algorithm>
+#include<iterator>
 using namespace std;
 //非类中函数写到Common.cpp里
 
@@ -740,15 +741,19 @@ Serials_Vec_Type AirTicSystem::Search_Flight_In_Condition() {
 	Serials_Vec_Type To_Return;
 	insert_iterator<Serials_Vec_Type> V_init(To_Return, To_Return.begin());
 	copy(Sers_Set.begin(), Sers_Set.end(), V_init);
+	sort(To_Return.begin(), To_Return.end());
 	return To_Return;
 }
 
 
 
-void AirTicSystem::Book_Flight_Tics(const Serials_Vec_Type& To_Book_Vec,Serials_Vec_Type& Booked_Vec) {
-
-	for (auto V_Iter = To_Book_Vec.begin();
-		V_Iter != To_Book_Vec.end(); V_Iter++) {
+void AirTicSystem::Book_Flight_Tics(const Serials_Vec_Type& To_Book_Vec, const Serials_Vec_Type& Haved_Vec, Serials_Vec_Type& Booked_Vec) {
+	Booked_Vec.clear();
+	Serials_Vec_Type Real_To_Book = To_Book_Vec;
+	auto read_iter = set_difference(To_Book_Vec.begin(), To_Book_Vec.end(), Haved_Vec.begin(), Haved_Vec.end(), Real_To_Book.begin());
+	Real_To_Book.resize(read_iter - Real_To_Book.begin());
+	for (auto V_Iter = Real_To_Book.begin();
+		V_Iter != Real_To_Book.end(); V_Iter++) {
 		auto M_Iter = Ser_Flight_Map.find(*V_Iter);
 		if (M_Iter == Ser_Flight_Map.end()) {
 			cout << "未找到该航班  ";
@@ -782,6 +787,13 @@ Serials_Vec_Type AirTicSystem::Choose_Tics_To_Cancel(const Serials_Vec_Type& All
 		int i = 1;
 		for (auto V_Iter = All_In_Cus.begin();
 			V_Iter != All_In_Cus.end(); V_Iter++) {
+			if (Ser_Flight_Map.find(*V_Iter) == Ser_Flight_Map.end()) {
+				
+				cout << " 第 " << i << " 张 ";
+				cout << "无此航班  " << (*V_Iter) << endl;
+				i++;
+				continue;
+			}
 			cout << " 第 " << i << " 张 ";
 			Print_Flight_To_Termimal_In_Ser(*V_Iter);
 			i++;
@@ -793,7 +805,7 @@ Serials_Vec_Type AirTicSystem::Choose_Tics_To_Cancel(const Serials_Vec_Type& All
 		cin >> choice;
 		while (choice!=0)
 		{
-			To_Cancel_Set.insert(All_In_Cus[choice]);
+			To_Cancel_Set.insert(All_In_Cus[choice-1]);
 			cout << "将继续输入(0是退出)" << endl;
 			cin >> choice;
 		}

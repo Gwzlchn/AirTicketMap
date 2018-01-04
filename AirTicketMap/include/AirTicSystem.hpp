@@ -120,7 +120,7 @@ public:
 
 	Serials_Vec_Type Search_Flight_In_Condition();
 
-	void Book_Flight_Tics(const Serials_Vec_Type& To_Book_Vec,Serials_Vec_Type& Booked_Vec);
+	void Book_Flight_Tics(const Serials_Vec_Type& To_Book_Vec,const Serials_Vec_Type& Haved_Vec, Serials_Vec_Type& Booked_Vec);
 
 
 	Serials_Vec_Type Book_The_Flight();

@@ -2,7 +2,8 @@
 #include"..\include\Common.hpp"
 #include<fstream>
 #include<iostream>
-
+#include<algorithm>
+#include<iterator>
 using namespace std;
 
 void  Admin_System::Read_A_And_C_From_CSV(const char * Admin_File, const char * Cus_File) {
@@ -215,17 +216,51 @@ void Admin_System::Customer_Identity(AirTicSystem & Air_Tic_Data) {
 
 
 
+string Admin_System::Merge_Cus_Info_To_One_String(Customer One_Cus) {
+	string One_Line(One_Cus.Cus_Name);
+	One_Line += ",";
+	One_Line += One_Cus.Cus_Pwd;
+	One_Line += ",";
+	One_Line += to_string(One_Cus.Flight_Serials.size());
+	One_Line += ",";
+	for (auto V_Iter = One_Cus.Flight_Serials.begin();
+		V_Iter != One_Cus.Flight_Serials.end(); V_Iter++) {
+		One_Line += (*V_Iter);
+		One_Line += ",";
+	}
+	return One_Line;
+
+}
+
+void Admin_System::Store_Cus_Data(const char* File_Name) {
+	ofstream Save_Cus(File_Name);
+	if (!Save_Cus) {
+		cerr << "打开文件失败" << endl;
+		system("pause");
+	}
+	Save_Cus << "用户名,密码,数量,流水号" << endl;
+	for (auto C_Iter = Customer_Map.begin(); C_Iter != Customer_Map.end(); C_Iter++) {
+		string temp = Merge_Cus_Info_To_One_String(C_Iter->second);
+		Save_Cus << temp << endl;
+	}
+	return;
+}
+
+
+
 void Admin_System::Customers_Manage(const string Customer_Name,AirTicSystem & Air_Tic_Data)
 {
 	//用户个人信息，在map中定位
 	auto C_Iter = Customer_Map.find(Customer_Name);
-	Serials_Vec_Type One_Cus_Ser_Vec = C_Iter->second.Flight_Serials;
-
+	Serials_Vec_Type& One_Cus_Ser_Vec = C_Iter->second.Flight_Serials;
+	sort(One_Cus_Ser_Vec.begin(), One_Cus_Ser_Vec.end());
 	cout << "选择用户可用功能" << endl;
 	int C_Choose = Customers_Choose_Func();
 	string ID;
 	Serials_Vec_Type Same_ID;
 	Flight New_Fl;
+	Serials_Vec_Type To_Book, Booked;
+	Serials_Vec_Type To_Cancel,Canceled;
 	for (; C_Choose != 0; C_Choose = Customers_Choose_Func()) {
 		switch (C_Choose)
 		{
@@ -239,14 +274,20 @@ void Admin_System::Customers_Manage(const string Customer_Name,AirTicSystem & Ai
 			Air_Tic_Data.Print_Flight_Serials_Vec_To_Terminal(Same_ID);
 			break;
 		case 3:
-			string;
+			cout << "欢迎使用购票系统" << endl;
+			To_Book = Air_Tic_Data.Search_Flight_In_Condition();
+			Air_Tic_Data.Book_Flight_Tics(To_Book, One_Cus_Ser_Vec ,Booked);
+			One_Cus_Ser_Vec.insert(One_Cus_Ser_Vec.end(), Booked.begin(), Booked.end());
+			Store_Cus_Data("storeusers.csv");
 			break;
 		case 4:
 			cout << "您所购买的机票如下所示" << endl;
 			Air_Tic_Data.Print_Flight_Serials_Vec_To_Terminal(One_Cus_Ser_Vec);
 			break;
-		case 6:
-			Serials_Vec_Type cancels = Air_Tic_Data.Choose_Tics_To_Cancel(One_Cus_Ser_Vec);
+		case 5:
+			To_Cancel = Air_Tic_Data.Choose_Tics_To_Cancel(One_Cus_Ser_Vec);
+			Vector_Set_Diff(One_Cus_Ser_Vec, To_Cancel);
+			Store_Cus_Data("storeusers.csv");
 			//Air_Tic_Data.Cancel_Flight_Tics(cancels);
 			break;
 
@@ -262,6 +303,15 @@ void Admin_System::Customers_Manage(const string Customer_Name,AirTicSystem & Ai
 
 
 
+void Admin_System::Vector_Set_Diff(Serials_Vec_Type& Ans_Vec,const Serials_Vec_Type To_Diff){
+	
+Serials_Vec_Type Real_To_Ans = Ans_Vec;
+auto read_iter = set_difference(Ans_Vec.begin(), Ans_Vec.end(), To_Diff.begin(), To_Diff.end(), Real_To_Ans.begin());
+Real_To_Ans.resize(read_iter - Real_To_Ans.begin());
+Ans_Vec = Real_To_Ans;
+return;
+}
+
 
 int Admin_System::Customers_Choose_Func()
 {
@@ -271,11 +321,10 @@ int Admin_System::Customers_Choose_Func()
 		<< "2. 按航班号查询所有航班" << endl
 		<< "3. 按条件查询所有航班" << endl
 		<<" 4. 预览自己所购买的票"<<endl
-		<< "5. 订票" << endl
-		<<"6. 退票"<<endl
+		<<"5. 退票"<<endl
 		
 		//<<"5. "
-		<< "0. 退出管理员通道" << endl;
+		<< "0. 退出用户通道" << endl;
 	
 
 	choice = For_All_Check(Check_Customers_Choose);

@@ -57,11 +57,18 @@ public:
 
 	//static int Check_Users_Choose(int Choice);
 
-	void Customers_Manage(AirTicSystem & Air_Tic_Data);
-
+	
 	void Customer_Identity(AirTicSystem & Air_Tic_Data);
 
+	string Merge_Cus_Info_To_One_String(Customer One_Cus);
+
+	void Store_Cus_Data(const char * File_Name);
+
 	void Customers_Manage(const string Customer_Name, AirTicSystem & Air_Tic_Data);
+
+	
+
+	void Vector_Set_Diff(Serials_Vec_Type & Ans_Vec, const Serials_Vec_Type To_Diff);
 
 	int Customers_Choose_Func();
 

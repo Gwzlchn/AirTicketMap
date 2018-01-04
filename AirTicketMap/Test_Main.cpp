@@ -52,7 +52,7 @@ int main() {
 
 
 
-	test.Search_Flight_In_Condition();
+	//test.Search_Flight_In_Condition();
 	
 
 	Admin_System A_And_C(Admin_File, Cus_File,Flight_File_Name);

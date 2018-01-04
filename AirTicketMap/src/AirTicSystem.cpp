@@ -123,6 +123,10 @@ int AirTicSystem::Search_Flight_ByID(string Flight_ID, Serials_Vec_Type& Serials
 	auto Sers_Entries = FlightID_Ser_Map.count(Flight_ID);
 	size_t Sers_Cnt = Sers_Entries;
 	auto S_Iter = FlightID_Ser_Map.find(Flight_ID);
+	if (S_Iter == FlightID_Ser_Map.end()) {
+		cout << "无此航班" << endl;
+		return 0;
+	}
 	while (Sers_Entries) {
 		Serials_Vec.push_back(S_Iter->second);
 		++S_Iter;

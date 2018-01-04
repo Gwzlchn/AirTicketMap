@@ -124,7 +124,7 @@ int AirTicSystem::Search_Flight_ByID(string Flight_ID, Serials_Vec_Type& Serials
 	size_t Sers_Cnt = Sers_Entries;
 	auto S_Iter = FlightID_Ser_Map.find(Flight_ID);
 	if (S_Iter == FlightID_Ser_Map.end()) {
-		cout << "无此航班" << endl;
+		cout << "无此航班号" << endl;
 		return 0;
 	}
 	while (Sers_Entries) {
@@ -736,6 +736,7 @@ Serials_Vec_Type AirTicSystem::Search_Flight_In_Condition() {
 			}
 			else {
 				cout << "这两城市之间无法中转到达" << endl;
+				break;
 			}
 		}
 			
@@ -839,6 +840,7 @@ void AirTicSystem::Cancel_Flight_Tics(const Serials_Vec_Type& To_Cancel_Vec, Ser
 			M_Iter->second.Cur_Order--;
 			cout << "退票成功" << endl;
 			Canceled_Vec.push_back(M_Iter->first);
+			system("pause");
 		}
 		
 	}

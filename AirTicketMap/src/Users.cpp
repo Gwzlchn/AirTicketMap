@@ -159,7 +159,13 @@ void Admin_System::Admin_Manage(AirTicSystem & Air_Tic_Data)
 		case 3:
 			
 			New_Fl = Create_New_Flight();
-			Air_Tic_Data.Insert_Flight_To_All(New_Fl);
+			if (Air_Tic_Data.Insert_Flight_To_All(New_Fl)) {
+				cout << "成功插入" << endl;
+			}
+			else
+			{
+				cout << "已有相同(同时间)航班" << endl;
+			}
 			Air_Tic_Data.Print_Flight_All_In_Sys_To_Terminal();
 			break;
 		}

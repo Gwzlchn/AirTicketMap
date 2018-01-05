@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 import sys
 
-posi=pd.read_excel("./PythonMap/2018Cities-CHINA.xlsx") #读取中国城市数据
+posi=pd.read_excel("./2018Cities-CHINA.xlsx") #读取中国城市数据
 short=np.array(posi["short"][0:130])					  #获取城市名称缩写
 lat = np.array(posi["lat"][0:130])                        # 获取纬度值
 lon = np.array(posi["lon"][0:130])                        # 获取经度值
@@ -15,9 +15,9 @@ map = Basemap(projection='merc',
 	              lat_0=42.5, lon_0=120,
 	              llcrnrlon=70.33,llcrnrlat=3.01,urcrnrlon=138.16,urcrnrlat=56.123)   #地图初始化
 
-map.readshapefile("./PythonMap/CHN_adm_shp/CHN_adm1",'states',drawbounds=True)
+map.readshapefile("./CHN_adm_shp/CHN_adm1",'states',drawbounds=True)
 #画省界线
-posj=pd.read_excel("./PythonMap/2019Cities-CHINA.xlsx") #读取中国城市数据
+posj=pd.read_excel("./2019Cities-CHINA.xlsx") #读取中国城市数据
 short1=np.array(posj["short1"][0:100])					  #获取起飞城市名称缩写
 short2=np.array(posj["short2"][0:100])					  #获取起飞城市名称缩写
 def draww(Tt_City,Ll_City):

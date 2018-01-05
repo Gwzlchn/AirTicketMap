@@ -166,7 +166,7 @@ void Admin_System::Admin_Manage(AirTicSystem & Air_Tic_Data)
 			{
 				cout << "已有相同(同时间)航班" << endl;
 			}
-			Air_Tic_Data.Print_Flight_All_In_Sys_To_Terminal();
+			//Air_Tic_Data.Print_Flight_All_In_Sys_To_Terminal();
 			break;
 		}
 
@@ -315,6 +315,7 @@ void Admin_System::Customers_Manage(const string Customer_Name,AirTicSystem & Ai
 void Admin_System::Vector_Set_Diff(Serials_Vec_Type& Ans_Vec,const Serials_Vec_Type To_Diff){
 	
 Serials_Vec_Type Real_To_Ans = Ans_Vec;
+sort(Ans_Vec.begin(), Ans_Vec.end());
 auto read_iter = set_difference(Ans_Vec.begin(), Ans_Vec.end(), To_Diff.begin(), To_Diff.end(), Real_To_Ans.begin());
 Real_To_Ans.resize(read_iter - Real_To_Ans.begin());
 Ans_Vec = Real_To_Ans;
@@ -329,7 +330,7 @@ int Admin_System::Customers_Choose_Func()
 	cout << "1. 预览系统中所有航班" << endl
 		<< "2. 按航班号查询所有航班" << endl
 		<< "3. 按条件查询所有航班" << endl
-		<<" 4. 预览自己所购买的票"<<endl
+		<<"4. 预览自己所购买的票"<<endl
 		<<"5. 退票"<<endl
 		
 		//<<"5. "

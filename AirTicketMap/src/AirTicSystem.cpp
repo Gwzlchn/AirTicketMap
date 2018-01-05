@@ -628,7 +628,11 @@ bool AirTicSystem::Is_In_City_Map(string City_Short) {
 	auto iter = City_Short_Map.find(City_Short);
 	if (iter == City_Short_Map.end())
 		return false;
-	return true;
+	else {
+		cout << "输入城市为： ";
+		cout << iter->second<<endl;
+		return true;
+	}
 }
 
 Serials_Vec_Type AirTicSystem::Search_Flight_In_Condition() {
@@ -687,10 +691,7 @@ Serials_Vec_Type AirTicSystem::Search_Flight_In_Condition() {
 			Serials_Vec_Type T_Date_Vec, L_Date_Vec;
 			cout << "输入起飞日期（按照yyyy/mm/dd）" << endl;
 			cin >> T_Date;
-			while (true)
-			{
-
-			}
+		
 			cout << "输入最晚降落日期，（按照yyyy/mm/dd）" << endl;
 			cin >> L_Date;
 
@@ -830,7 +831,7 @@ Serials_Vec_Type AirTicSystem::Choose_Tics_To_Cancel(const Serials_Vec_Type& All
 		copy(To_Cancel_Set.begin(), To_Cancel_Set.end(), V_init);
 
 
-
+		sort(To_Cancel_Vec.begin(), To_Cancel_Vec.end());
 		return To_Cancel_Vec;
 	}
 
